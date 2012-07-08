@@ -1,13 +1,26 @@
-(function( $ ) {
+(function($) {
 
   var methods = {
     init: function( options ) {
 	},
-	fetchContexts: function(contexts, options, callback) {
-	}
+    rawResourceURL: function( user, repo, tag, path ) {
+        return "https://raw.github.com/" + user + "/" + repo + "/" + tag + "/" + path;
+    },
+    commit: function() {
+    }
   }
 
-  function jsonpCall(url, callbackContext, callback, failCallback) {
+  $.fn.github = function( method ) {
+    if ( methods[method] ) {
+      return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+    } else if ( typeof method === 'object' || ! method ) {
+      return methods.init.apply( this, arguments );
+    } else {
+      $.error( 'Method ' +  method + ' does not exist on jQuery.github' );
+    }
+  };
+
+  function jsonpCall( url, callbackContext, callback, failCallback ) {
 	/* No proper handling of error 404, ie fail is not fired => using jquery-jsonp plugin. */
 	/*jQuery.ajax({
 		url: url,
@@ -23,15 +36,4 @@
 		error: failCallback
 	});
   }
-
-  $.fn.github = function( method ) {
-    if ( methods[method] ) {
-      return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-    } else if ( typeof method === 'object' || ! method ) {
-      return methods.init.apply( this, arguments );
-    } else {
-      $.error( 'Method ' +  method + ' does not exist on jQuery.github' );
-    }
-  };
 })( jQuery );
-
