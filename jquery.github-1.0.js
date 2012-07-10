@@ -42,6 +42,9 @@
 	return jQuery.ajax({
 		url: url,
 		dataType: "json",
+		xhrFields: {
+			withCredentials: true
+		}
 	});
   }
 
