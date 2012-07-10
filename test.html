@@ -3,23 +3,25 @@
 	<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 	<script src="jquery.github-1.0.js"></script>
 	<script>
-		$(document).ready(function() {
-            $().github( 'tree', 'alebellu', 'jquery-github', 'gh-pages' ).done(function(tree) {
+	$(document).ready(function() {
+	}
+
+	function getTree() {
+            	$().github( 'tree', 'alebellu', 'jquery-github', 'gh-pages' ).done(function(tree) {
 				$ ('#results' ).empty();
 				for (var i = 0; i < tree.tree.length ; i ++) {
 					var el = tree.tree[i];
 					$( '#results' ).append( $( '<li>' ).html( el.path + " " + el.size ) );
 				}
-			});
-
-			alert($( '#results' ));
-	
+			});	
 		});
+	}
 	</script>
 </head>
 <body>
 	<div id="content">
 		<h1>JQuery GitHub Library Test</h1>
+		<input type="button" value="Get tree" onclick="getTree()" />
 		<ul id="results" />
 	</div>
 </body>
