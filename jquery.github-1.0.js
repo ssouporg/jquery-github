@@ -36,7 +36,7 @@
 	* 	@path the path
 	* @returns a deferred for the call
 	*/
-	path: function( options ) {
+	treeAtPath: function( options ) {
 		var dr = $.Deferred();
 		var drd = function() { dr.resolve(); };
 		var drf = function() { dr.reject(); };
@@ -71,10 +71,10 @@
 
 					if ( firstLevelSHA ) {
 						// ..navigate down one level
-						$( this ).github('path', {
+						$( this ).github('treeAtPath', {
 							user: options.user,
 							repo: options.repo,
-							tree: 
+							tree: firstLevelSHA
 						} ).done( drd ).fail( drf );
 					} else {
 						drf();
