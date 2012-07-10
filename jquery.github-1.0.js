@@ -55,7 +55,8 @@
 			}
 		}
 
-		var options
+		var opt = $.extend( {}, options );
+		delete opt.path;
 		$( this ).github( 'tree', options )
 			.done( function(tree) {
 				if ( path ) {
