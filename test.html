@@ -7,8 +7,8 @@
 	});
 
 	function getTree() {
+		$ ('#results' ).empty();
             	$().github( 'tree', 'alebellu', 'jquery-github', 'gh-pages' ).done(function(tree) {
-			$ ('#results' ).empty();
 			for (var i = 0; i < tree.tree.length ; i ++) {
 				var el = tree.tree[i];
 				$( '#results' ).append( $( '<li>' ).html( el.path + " " + el.size ) );
