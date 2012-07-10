@@ -3,28 +3,76 @@
   var api = "https://api.github.com";
 
   var methods = {
-    init: function( options ) {
+	init: function( options ) {
 	},
-    rawResourceURL: function( user, repo, tag, path ) {
-        return "https://raw.github.com/" + user + "/" + repo + "/" + tag + "/" + path;
-    },
 
 	/**
-	* Get info for a given tree.
+	 * Returns the github raw URL of a given resource.
+	 */
+	raw: function( user, repo, tag, path ) {
+		return "https://raw.github.com/" + user + "/" + repo + "/" + tag + "/" + path;
+	},
+
+	/**
+	* Gets info for a given tree.
 	*
-	* @user the user
-	* @repo the repository
-	* @tag either the name or the sha of a tag
-	* @path the path
+	* @options:
+	* 	@user the user
+	* 	@repo the repository
+	* 	@tree either the name of a tag or the sha of a tag/path
 	* @returns a deferred for the call
 	*/
 	tree: function( options ) {
+		return jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
+	},
+
+	/**
+	* Gets info for a given path.
+	*
+	* @options:
+	* 	@user the user
+	* 	@repo the repository
+	* 	@tree either the name of a tag or the sha of a tag/path
+	* 	@path the path
+	* @returns a deferred for the call
+	*/
+	path: function( options ) {
 		var dr = $.Deferred();
 		var drd = function() { dr.resolve(); };
 		var drf = function() { dr.reject(); };
 
-		jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tag )
-			.done(drd).fail(drf);
+		var path = options.path;
+		if ( path ) {
+			// clean the path
+			path = path.trim();
+			if ( path[0] == '/' ) {
+				path = path.substring( 1, path.length );
+			}
+		}
+
+		jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree )
+			.done( function(tree) {
+				if ( path ) {
+					// still path levels to navigate to..
+					// ..navigate down one level
+					var indexOfSlash = path.indexOf( '/' );
+					var firstLevel;
+					if (indexOfSlash > 0 ) {
+						firstLevel = path.substring( 0, indexOfSlash );
+						path = options.path.substring( indexOfSlash + 1 );
+					}
+
+					$( this ).github('path', {
+						user: options.user,
+						repo: options.repo,
+						tree: 
+					} ).done( drd ).fail( drf );
+				} else {
+					// got it
+					dr.resolveWith( tree );
+				}
+			} )
+			.fail( drf );
 
 		return dr;
 	},
@@ -42,6 +90,28 @@
 			api + "/repos/" + user + "/" + repo + "/git/blobs/" + sha
 		);
 	},
+
+	/**
+	* Gets info for a given path.
+	*
+	* @options:
+	* 	@user the user
+	* 	@repo the repository
+	* 	@tag either the name or the sha of a tag
+	* 	@path the path
+	* @returns a deferred for the call
+	*/
+	path: function( options ) {
+		var dr = $.Deferred();
+		var drd = function() { dr.resolve(); };
+		var drf = function() { dr.reject(); };
+
+		jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tag )
+			.done(drd).fail(drf);
+
+		return dr;
+	},
+
 	getResource: function( user, repo, tag, path ) {
 		$(this).github('tree', user)
 	},
