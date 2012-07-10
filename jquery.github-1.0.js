@@ -50,7 +50,7 @@
 			}
 		}
 
-		jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree )
+		$( this ).github( 'tree', options )
 			.done( function(tree) {
 				if ( path ) {
 					// still path levels to navigate to..
