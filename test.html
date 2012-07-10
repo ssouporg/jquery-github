@@ -8,7 +8,8 @@
 		$(document).ready(function() {
             $().github( 'tree', 'alebellu', 'jquery-github', 'master' ).done(function(tree) {
 				$ ('#results' ).empty();
-				for (el in tree.tree) {
+				for (var i = 0; i < tree.tree.length ; i ++) {
+					var el = tree.tree[i];
 					$( '#results' ).append( $( 'li' ).add( el.path + " " + el.size ) );
 				}
 			});
