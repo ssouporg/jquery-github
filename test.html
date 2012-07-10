@@ -10,7 +10,7 @@
 				$ ('#results' ).empty();
 				for (var i = 0; i < tree.tree.length ; i ++) {
 					var el = tree.tree[i];
-					$( '#results' ).append( $( 'li' ).add( el.path + " " + el.size ) );
+					$( '#results' ).append( $( 'li' ).html( el.path + " " + el.size ) );
 				}
 			});
 		});
