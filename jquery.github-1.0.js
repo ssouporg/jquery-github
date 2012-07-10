@@ -42,9 +42,6 @@
 	return jQuery.ajax({
 		url: url,
 		dataType: "json",
-		headers: {
-			origin: "alebellu.github.com/jquery-github"
-		}
 	});
   }
 
