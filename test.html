@@ -25,7 +25,7 @@
             	$().github( 'tree', 'alebellu', 'jquery-github', 'gh-pages' ).done(function(tree) {
             		$().github( 'blob', 'alebellu', 'jquery-github', 'gh-pages', '/test/count' ).done(function(blob) {
 				$( '#results' ).append( $( '<li>' ).html( blob );
-            		}
+            		})
 		});
 	}
 	</script>
