@@ -42,8 +42,8 @@
 	return jQuery.ajax({
 		url: url,
 		dataType: "json",
-		xhrFields: {
-			withCredentials: true
+		headers: {
+			origin: "alebellu.github.com/jquery-github"
 		}
 	});
   }
