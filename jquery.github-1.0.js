@@ -19,11 +19,16 @@
 	* @options:
 	* 	@user the user
 	* 	@repo the repository
-	* 	@tree either the name of a tag or the sha of a tag/path
+	* 	@tree either the name of a tag or the sha of a tag/tree
+	*	@path the root path of the tree
 	* @returns a deferred for the call
 	*/
 	tree: function( options ) {
-		return jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
+		if ( options.path ) {
+			return $( this ).github( 'treeAtPath', options );
+		} else {
+			return jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
+		}
 	},
 
 	/**
@@ -50,6 +55,7 @@
 			}
 		}
 
+		var options
 		$( this ).github( 'tree', options )
 			.done( function(tree) {
 				if ( path ) {
