@@ -21,6 +21,19 @@
 			api + "/repos/" + user + "/" + repo + "/git/trees/" + tree
 		);
 	},
+	/**
+	* Get info for a given tree.
+	*
+	* @user the user
+	* @repo the repository
+	* @sha sha of the blob
+	* @returns a deferred for the call
+	*/
+	blob: function( user, repo, sha ) {
+		return jsonCall(
+			api + "/repos/" + user + "/" + repo + "/git/blobs/" + sha
+		);
+	},
 	getResource: function( user, repo, tag, path ) {
 		
 	},
