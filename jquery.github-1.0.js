@@ -54,7 +54,6 @@
 			.done( function(tree) {
 				if ( path ) {
 					// still path levels to navigate to..
-					// ..navigate down one level
 					var indexOfSlash = path.indexOf( '/' );
 					var firstLevel;
 					if (indexOfSlash > 0 ) {
@@ -62,6 +61,7 @@
 						path = path.substring( indexOfSlash + 1 );
 					}
 
+					// ...look for the sha of first level directory in the path..
 					var firstLevelSHA;
 					for ( var i = 0; i < tree.tree.length; i ++) {
 						if (tree.tree[i].type == 'tree' && tree.tree[i].path == firstLevel) {
@@ -70,6 +70,7 @@
 					}
 
 					if ( firstLevelSHA ) {
+						// ..navigate down one level
 						$( this ).github('path', {
 							user: options.user,
 							repo: options.repo,
