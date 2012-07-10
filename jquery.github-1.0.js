@@ -16,9 +16,9 @@
 	* @tree the tree, either the name or the sha
 	* @returns a deferred for the call
 	*/
-	tree: function( user, repo, tree ) {
+	tree: function( options ) {
 		return jsonCall(
-			api + "/repos/" + user + "/" + repo + "/git/trees/" + tree
+			api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree
 		);
 	},
 	/**
@@ -35,7 +35,7 @@
 		);
 	},
 	getResource: function( user, repo, tag, path ) {
-		
+		$(this).github('tree', user)
 	},
     commit: function() {
     }
