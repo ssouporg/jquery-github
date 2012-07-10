@@ -57,7 +57,7 @@
 
 		var opt = $.extend( {}, options );
 		delete opt.path;
-		$( this ).github( 'tree', options )
+		$( this ).github( 'tree', opt )
 			.done( function(tree) {
 				if ( path ) {
 					// still path levels to navigate to..
