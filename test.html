@@ -6,12 +6,18 @@
 <body>
 	<script>
 		$(document).ready(function() {
-            $.github('login');
+            $().github( 'tree', 'alebellu', 'jquery-github', 'master' ).done(function(tree) {
+				$ ('#results' ).clear();
+				for (el in tree.tree) {
+					$( '#results' ).append( $( 'li' ).add( el.path + " " + el.size ) );
+				}
+			});
 		});
 	</script>
 
 	<div id="content">
 		<h1>JQuery GitHub Library Test</h1>
+		<ul id="results" />
 	</div>
 </body>
 </html>
