@@ -59,14 +59,25 @@
 					var firstLevel;
 					if (indexOfSlash > 0 ) {
 						firstLevel = path.substring( 0, indexOfSlash );
-						path = options.path.substring( indexOfSlash + 1 );
+						path = path.substring( indexOfSlash + 1 );
 					}
 
-					$( this ).github('path', {
-						user: options.user,
-						repo: options.repo,
-						tree: 
-					} ).done( drd ).fail( drf );
+					var firstLevelSHA;
+					for ( var i = 0; i < tree.tree.length; i ++) {
+						if (tree.tree[i].type == 'tree' && tree.tree[i].path == firstLevel) {
+							firstLevelSHA = tree.tree[i].sha;
+						}
+					}
+
+					if ( firstLevelSHA ) {
+						$( this ).github('path', {
+							user: options.user,
+							repo: options.repo,
+							tree: 
+						} ).done( drd ).fail( drf );
+					} else {
+						drf();
+					}
 				} else {
 					// got it
 					dr.resolveWith( tree );
