@@ -8,11 +8,23 @@
 
 	function getTree() {
 		$ ('#results' ).empty();
-            	$().github( 'tree', 'alebellu', 'jquery-github', 'gh-pages' ).done(function(tree) {
+            	$().github( 'tree', {
+            		user: 'alebellu',
+            		repo: 'jquery-github',
+            		tag: 'gh-pages'
+            	}).done(function(tree) {
 			for (var i = 0; i < tree.tree.length ; i ++) {
 				var el = tree.tree[i];
 				$( '#results' ).append( $( '<li>' ).html( el.path + " " + el.size ) );
 			}
+		});
+	}
+
+	function getBlob() {
+		$ ('#results' ).empty();
+            	$().github( 'tree', 'alebellu', 'jquery-github', 'gh-pages' ).done(function(tree) {
+            		$().github( 'blob', 'alebellu', 'jquery-github', 'gh-pages', '/test/count' ).done(function(blob) {
+			$( '#results' ).append( $( '<li>' ).html( blob );
 		});
 	}
 	</script>
@@ -21,6 +33,7 @@
 	<div id="content">
 		<h1>JQuery GitHub Library Test</h1>
 		<input type="button" value="Get tree" onclick="getTree()" />
+		<input type="button" value="Get blob" onclick="getBlob()" />
 		<div>
 			Message <input type="text" />
 			<input type="button" value="Commit" onclick="commit()" />
