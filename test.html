@@ -7,7 +7,7 @@
 	<script>
 		$(document).ready(function() {
             $().github( 'tree', 'alebellu', 'jquery-github', 'master' ).done(function(tree) {
-				$ ('#results' ).clear();
+				$ ('#results' ).empty();
 				for (el in tree.tree) {
 					$( '#results' ).append( $( 'li' ).add( el.path + " " + el.size ) );
 				}
