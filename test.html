@@ -6,12 +6,13 @@
 	$(document).ready(function() {
 	});
 
-	function getTree() {
+	function getTree( path ) {
 		$ ('#results' ).empty();
             	$().github( 'tree', {
             		user: 'alebellu',
             		repo: 'jquery-github',
-            		tree: 'gh-pages'
+            		tree: 'gh-pages',
+            		path: path
             	}).done(function(tree) {
 			for (var i = 0; i < tree.tree.length ; i ++) {
 				var el = tree.tree[i];
@@ -34,6 +35,7 @@
 	<div id="content">
 		<h1>JQuery GitHub Library Test</h1>
 		<input type="button" value="Get tree" onclick="getTree()" />
+		<input type="button" value="Get tree at path" onclick="getTree('test')" />
 		<input type="button" value="Get blob" onclick="getBlob()" />
 		<div>
 			Message <input type="text" />
