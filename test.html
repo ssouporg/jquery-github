@@ -4,7 +4,7 @@
 	<script src="jquery.github-1.0.js"></script>
 	<script>
 		$(document).ready(function() {
-            $().github( 'tree', 'alebellu', 'jquery-github', 'master' ).done(function(tree) {
+            $().github( 'tree', 'alebellu', 'jquery-github', 'gh-pages' ).done(function(tree) {
 				$ ('#results' ).empty();
 				for (var i = 0; i < tree.tree.length ; i ++) {
 					var el = tree.tree[i];
