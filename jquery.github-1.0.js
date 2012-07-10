@@ -81,7 +81,8 @@
 						$( this ).github('treeAtPath', {
 							user: options.user,
 							repo: options.repo,
-							tree: firstLevelSHA
+							tree: firstLevelSHA,
+							path: path
 						} ).done( drd ).fail( drf );
 					} else {
 						drf();
