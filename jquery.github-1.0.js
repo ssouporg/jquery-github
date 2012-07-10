@@ -8,21 +8,29 @@
     rawResourceURL: function( user, repo, tag, path ) {
         return "https://raw.github.com/" + user + "/" + repo + "/" + tag + "/" + path;
     },
+
 	/**
 	* Get info for a given tree.
 	*
 	* @user the user
 	* @repo the repository
-	* @tree the tree, either the name or the sha
+	* @tag either the name or the sha of a tag
+	* @path the path
 	* @returns a deferred for the call
 	*/
 	tree: function( options ) {
-		return jsonCall(
-			api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree
-		);
+		var dr = $.Deferred();
+		var drd = function() { dr.resolve(); };
+		var drf = function() { dr.reject(); };
+
+		jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tag )
+			.done(drd).fail(drf);
+
+		return dr;
 	},
+
 	/**
-	* Get info for a given tree.
+	* Get blob content.
 	*
 	* @user the user
 	* @repo the repository
