@@ -1,6 +1,6 @@
 (function($) {
 
-  var api = "https://api.github.com/";
+  var api = "https://api.github.com";
 
   var methods = {
     init: function( options ) {
