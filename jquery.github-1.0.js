@@ -68,7 +68,7 @@
 						path = path.substring( indexOfSlash + 1 );
 					} else {
 						firstLevel = path;
-						delete path;
+						path = null;
 					}
 
 					// ...look for the sha of first level directory in the path..
