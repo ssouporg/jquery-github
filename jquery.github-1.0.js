@@ -66,6 +66,8 @@
 					if (indexOfSlash > 0 ) {
 						firstLevel = path.substring( 0, indexOfSlash );
 						path = path.substring( indexOfSlash + 1 );
+					} else {
+						firstLevel = path;
 					}
 
 					// ...look for the sha of first level directory in the path..
