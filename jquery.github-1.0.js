@@ -43,7 +43,7 @@
 	*/
 	treeAtPath: function( options ) {
 		var dr = $.Deferred();
-		var drd = function() { dr.resolve(); };
+		var drd = function( tree ) { dr.resolveWith( this, tree ); };
 		var drf = function() { dr.reject(); };
 
 		var path = options.path;
@@ -97,7 +97,7 @@
 			} )
 			.fail( drf );
 
-		return dr;
+		return dr.promise();
 	},
 
 	/**
