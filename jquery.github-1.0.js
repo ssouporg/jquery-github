@@ -43,7 +43,7 @@
 	*/
 	treeAtPath: function( options ) {
 		var dr = $.Deferred();
-		var drd = function( tree ) { dr.resolveWith( this, tree ); };
+		var drd = function( tree ) { dr.resolveWith( this, [tree] ); };
 		var drf = function() { dr.reject(); };
 
 		var path = options.path;
