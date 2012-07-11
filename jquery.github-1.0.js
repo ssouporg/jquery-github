@@ -92,7 +92,7 @@
 					}
 				} else {
 					// got it
-					dr.resolveWith( tree );
+					dr.resolveWith( this, tree );
 				}
 			} )
 			.fail( drf );
