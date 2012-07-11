@@ -63,7 +63,7 @@
 					// still path levels to navigate to..
 					var indexOfSlash = path.indexOf( '/' );
 					var firstLevel;
-					if (indexOfSlash > 0 ) {
+					if ( indexOfSlash > 0 ) {
 						firstLevel = path.substring( 0, indexOfSlash );
 						path = path.substring( indexOfSlash + 1 );
 					} else {
@@ -81,7 +81,7 @@
 
 					if ( firstLevelSHA ) {
 						// ..navigate down one level
-						$( this ).github('treeAtPath', {
+						$( this ).github( 'treeAtPath', {
 							user: options.user,
 							repo: options.repo,
 							tree: firstLevelSHA,
@@ -92,7 +92,7 @@
 					}
 				} else {
 					// got it
-					dr.resolveWith( this, tree );
+					dr.resolveWith( this, [tree] );
 				}
 			} )
 			.fail( drf );
