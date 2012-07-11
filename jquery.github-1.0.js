@@ -58,7 +58,7 @@
 		var opt = $.extend( {}, options );
 		delete opt.path;
 		$( this ).github( 'tree', opt )
-			.done( function(tree) {
+			.done( function( tree ) {
 				if ( path ) {
 					// still path levels to navigate to..
 					var indexOfSlash = path.indexOf( '/' );
