@@ -33,7 +33,7 @@
     			tree: 'gh-pages',
     			path: 'test/count'
     		}).done( function( blob ) {
-    			var content = window.atob( blob.content );
+    			var content = window.atob( blob.content.trim() );
 			$( '#results' ).empty().append( $( '<li>' ).html( content ) );
     		});
 	}
