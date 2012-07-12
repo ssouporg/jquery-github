@@ -18,9 +18,10 @@
             		tree: 'gh-pages',
             		path: path
             	}).done( function(tree) {
+            		$( '#results' ).empty();
 			for (var i = 0; i < tree.tree.length ; i ++) {
 				var el = tree.tree[i];
-				$( '#results' ).empty().append( $( '<li>' ).html( el.path + " " + el.size ) );
+				$( '#results' ).append( $( '<li>' ).html( el.path + " " + el.size ) );
 			}
 		});
 	}
