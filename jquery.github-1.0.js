@@ -114,9 +114,9 @@
 	blob: function( options ) {
 		var sha = options.sha;
 		if ( !sha ) {
-			for ( var i = 0; i < tree.tree.length; i ++) {
-				if (tree.tree[i].type == 'blob' && tree.tree[i].path == options.name) {
-					sha = tree.tree[i].sha;
+			for ( var i = 0; i < options.tree.tree.length; i ++) {
+				if (options.tree.tree[i].type == 'blob' && options.tree.tree[i].path == options.name) {
+					sha = options.tree.tree[i].sha;
 				}
 			}
 		}
