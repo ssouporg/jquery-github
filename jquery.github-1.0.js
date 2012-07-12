@@ -21,7 +21,7 @@
 	* 	@repo the repository
 	* 	@tree either the name of a tag or the sha of a tag/tree to retrieve/update
 	*	@path the root path of the tree
-	* 	@new_tree Array of Hash objects (of path, mode, type and sha) specifying a tree structure
+	* 	@new_tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure
 	* @returns a deferred for the call; callback will yield a tree object
 	*/
 	tree: function( options ) {
@@ -205,20 +205,21 @@
 	* 	@user the user
 	* 	@repo the repository
 	* 	@sha sha of the commit object to retrieve/update
-	*	@ref the reference to the commit object to retrieve/update
+	* 	@tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure to
+	* 	      associate to the new commit object.
 	* 	@content the content of the blob to commit, base-64 encoded
+	*	@path
+	*	@message the commit message
+	*	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
 	commit: function( options ) {
-		if ( options.content ) {
+		if ( options.tree || options.content ) {
 			// POST a commit object
-			if ( sha ) {
+			if ( options.tree ) {
+				return $( this ).github( 'commitTree', options );
 			} else {
-				$( this ).github('ref', {
-					user: options.user,
-					repo: options.repo,
-					ref: ref
-				});
+				return $( this ).github( 'commitContent', options );
 			}
 		} else {
 			// GET a commit object
@@ -234,13 +235,14 @@
 	* 	@user the user
 	* 	@repo the repository
 	* 	@sha sha of the commit object to retrieve/update
-	* 	@tree sha of the new tree to associate to the new commit object
+	* 	@tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure to
+	* 	      associate to the new commit object.
 	* 	@content the content of the blob to commit, base-64 encoded
 	*	@message the commit message
 	* 	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
-	commitSHA: function( options ) {
+	commitTree: function( options ) {
 		if ( options.content ) {
 			var dr = $.Deferred();
 			var drd = function( ref ) { dr.resolveWith( this, [ref] ); };
