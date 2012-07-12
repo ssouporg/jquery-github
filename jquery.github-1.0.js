@@ -206,7 +206,7 @@
 	* 	@repo the repository
 	* 	@sha sha of the commit object to retrieve/update
 	*	@commit_ref ref to a commit object
-	*	@tree sha of the tree to associate to the commit object.
+	*	@tree either the name of a tag or the sha of the tree to associate to the commit object.
 	* 	@new_tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure to
 	* 	      associate to the new commit object.
 	*	@message the commit message
@@ -217,7 +217,24 @@
 		if ( options.sha ) {
 			if ( options.tree ) {
 				// POST a commit object
-				return $( this ).github( 'commitTree', options );
+				if ( !options.new_tree ) {
+					return $( this ).github( 'commitTree', options );
+				} else {
+					// a new tree has to be created first
+					var dr = $.Deferred();
+					var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
+					var drf = function() { dr.reject(); };
+
+					$( this ).github( 'tree', options)
+						.done( function( tree ) {
+							var opt = $.extend( { tree: tree.sha }, options );
+							delete opt.new_tree;
+							$( this ).github( 'commit', opt ).done( drd ).fail( drf );
+						} )
+						.fail( drf );
+
+					return dr.promise();
+				}
 			} else {
 				// GET a commit object
 				return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
