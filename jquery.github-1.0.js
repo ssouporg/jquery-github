@@ -215,6 +215,7 @@
 	*/
 	commit: function( options ) {
 		if ( options.sha ) {
+			// an sha for the commit was specified
 			if ( options.tree ) {
 				// POST a commit object
 				if ( !options.new_tree ) {
@@ -225,10 +226,11 @@
 					var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
 					var drf = function() { dr.reject(); };
 
-					$( this ).github( 'tree', options)
+					$( this ).github( 'tree', options )
 						.done( function( tree ) {
-							var opt = $.extend( { tree: tree.sha }, options );
+							var opt = $.extend( {}, options );
 							delete opt.new_tree;
+							opt.tree = tree.sha;
 							$( this ).github( 'commit', opt ).done( drd ).fail( drf );
 						} )
 						.fail( drf );
@@ -272,9 +274,8 @@
 	* @options:
 	* 	@user the user
 	* 	@repo the repository
-	* 	@sha sha of the commit object to retrieve/update
-	* 	@tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure to
-	* 	      associate to the new commit object.
+	* 	@sha sha of the commit object to retrieve/the parent commit object of the new commit object
+	* 	@tree either the name of a tag or the sha of the tree to associate to the commit object.
 	*	@message the commit message
 	* 	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
