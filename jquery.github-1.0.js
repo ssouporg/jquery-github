@@ -19,17 +19,25 @@
 	* @options:
 	* 	@user the user
 	* 	@repo the repository
-	* 	@tree either the name of a tag or the sha of a tag/tree
+	* 	@tree either the name of a tag or the sha of a tag/tree to retrieve/update
 	*	@path the root path of the tree
-	*	@base_tree sha of the tree to update with new data
 	* 	@new_tree Array of Hash objects (of path, mode, type and sha) specifying a tree structure
 	* @returns a deferred for the call; callback will yield a tree object
 	*/
 	tree: function( options ) {
-		if ( options.path ) {
-			return $( this ).github( 'treeAtPath', options );
+		if ( options.new_tree ) {
+			// POST a new tree
+			return post( api + "/repos/" + options.user + "/" + options.repo + "/git/trees", {
+				base_tree: tree,
+				tree: new_tree
+			} );
 		} else {
-			return get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
+			// GETS a tree
+			if ( options.path ) {
+				return $( this ).github( 'treeAtPath', options );
+			} else {
+				return get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
+			}
 		}
 	},
 
