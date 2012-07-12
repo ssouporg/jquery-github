@@ -198,27 +198,50 @@
 
 	/**
 	* Gets or post a commit object.
-	* The commit sha can be passed in through the sha parameter. Otherwise a path
-	* can be specified and the latest commit for that path will be retrieved.
+	* The commit sha can be passed in through the sha parameter. Otherwise a heads ref
+	* can be specified and the latest commit for that head will be retrieved.
 	*
 	* @options:
 	* 	@user the user
 	* 	@repo the repository
 	* 	@sha sha of the commit object to retrieve/update
-	* 	@tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure to
+	*	@head_ref ref to an head
+	*	@tree sha of the tree to associate to the commit object.
+	* 	@new_tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure to
 	* 	      associate to the new commit object.
 	*	@message the commit message
 	*	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
 	commit: function( options ) {
-		if ( options.tree ) {
-			// POST a commit object
-			return $( this ).github( 'commitTree', options );
+		if ( options.sha ) {
+			if ( options.tree ) {
+				// POST a commit object
+				return $( this ).github( 'commitTree', options );
+			} else {
+				// GET a commit object
+				return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
+			}
 		} else {
-			// GET a commit object
-			return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
+			return $( this ).github( 'commitToHead', options );
 		}
+	},
+
+	commitToHead: function( options ) {
+		var dr = $.Deferred();
+		var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
+		var drf = function() { dr.reject(); };
+
+		var opt = $.extend( { ref: options.head_ref }, options );
+		delete opt.head_ref;
+		$( this ).github( 'ref', opt )
+			.done( function( ref ) {
+				opt.tree = ref.sha;
+				$( this ).github( 'commit', opt ).done( drd ).fail( drf );
+			} )
+			.fail( drf );
+
+		return dr.promise();
 	},
 
 	/**
@@ -231,13 +254,12 @@
 	* 	@sha sha of the commit object to retrieve/update
 	* 	@tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure to
 	* 	      associate to the new commit object.
-	* 	@content the content of the blob to commit, base-64 encoded
 	*	@message the commit message
 	* 	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
 	commitTree: function( options ) {
-		if ( options.content ) {
+		if ( options.tree ) {
 			var dr = $.Deferred();
 			var drd = function( ref ) { dr.resolveWith( this, [ref] ); };
 			var drf = function() { dr.reject(); };
