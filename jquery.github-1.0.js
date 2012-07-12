@@ -222,7 +222,7 @@
 				// GET a commit object
 				return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
 			}
-		} else {
+		} else if ( options.commit_ref  ) {
 			// resolve commit sha first
 			var dr = $.Deferred();
 			var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
@@ -243,6 +243,8 @@
 				.fail( drf );
 
 			return dr.promise();
+		} else {
+			// either sha or commit ref has to be specified
 		}
 	},
 
