@@ -171,11 +171,19 @@
 	* 	@user the user
 	* 	@repo the repository
 	* 	@ref the reference to retrieve/update
-	* 	@commit-sha sha of the commit object this ref will point to
+	* 	@commit sha of the commit object this ref will point to
 	* @returns a deferred for the call; callback will yield a reference object
 	*/
 	ref: function( options ) {
-		return get( api + "/repos/" + user + "/" + repo + "/git/refs/" + ref );
+		if ( options.commit ) {
+			// POST
+			return post( api + "/repos/" + options.user + "/" + options.repo + "/git/refs/" + options.ref, {
+				sha: options.commit
+			} );
+		} else {
+			// GET
+			return get( api + "/repos/" + options.user + "/" + options.repo + "/git/refs/" + options.ref );
+		}
 	},
 
 	/**
@@ -192,7 +200,9 @@
 	commit: function( options ) {
 		if ( options.content ) {
 			// POST a commit object
-			if ( sha )
+			if ( sha ) {
+				
+			}
 		} else {
 			// GET a commit object
 			return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
@@ -256,10 +266,11 @@
 	});
   }
 
-  function post( url ) {
+  function post( url, data ) {
 	return jQuery.ajax({
 		url: url,
 		type: 'POST',
+		data: data,
 		dataType: "json",
 	});
   }
