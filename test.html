@@ -43,7 +43,30 @@
 			$( '#results' ).empty().append( $( '<li>' ).html( content ) );
     		});
 	}
-	alert($.cookie('ghtoken'));
+
+	function increaseCount() {
+		$( '#results' ).empty();
+    		$().github( 'blob', {
+    			user: 'alebellu',
+    			repo: 'jquery-github',
+    			tree: 'gh-pages',
+    			path: 'test/count'
+    		}).done( function( blob ) {
+    			var content = window.atob( blob.content.trim() );
+    			content = '' + eval( content ) + 1;
+    			var encodedContent = window.btoa( content );
+	    		$().github( 'commit', {
+	    			user: 'alebellu',
+	    			repo: 'jquery-github',
+	    			tree: 'gh-pages',
+	    			path: 'test/count',
+	    			content: encodedContent
+	    		}).done( function() {
+		    		getBlob();
+	    		});
+    		});
+	}
+	//alert($.cookie('ghtoken'));
 	</script>
 </head>
 <body>
