@@ -101,16 +101,27 @@
 	},
 
 	/**
-	* Get blob content.
+	* Get blob content given its sha or the parent tree and the name of the blob.
 	*
-	* @user the user
-	* @repo the repository
-	* @sha sha of the blob
+	* @options:
+	* 	@user the user
+	* 	@repo the repository
+	* 	@tree sha of a tree object containing the blob
+	* 	@name the name of the blob
+	* 	@sha sha of the blob
 	* @returns a deferred for the call; callback will yield a blob object
 	*/
-	blob: function( user, repo, sha ) {
+	blob: function( options ) {
+		var sha = options.sha;
+		if ( !sha ) {
+			for ( var i = 0; i < tree.tree.length; i ++) {
+				if (tree.tree[i].type == 'blob' && tree.tree[i].path == options.name) {
+					sha = tree.tree[i].sha;
+				}
+			}
+		}
 		return jsonCall(
-			api + "/repos/" + user + "/" + repo + "/git/blobs/" + sha
+			api + "/repos/" + options.user + "/" + options.repo + "/git/blobs/" + sha
 		);
 	},
 
