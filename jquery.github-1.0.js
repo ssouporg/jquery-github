@@ -21,7 +21,7 @@
 	* 	@repo the repository
 	* 	@tree either the name of a tag or the sha of a tag/tree
 	*	@path the root path of the tree
-	* @returns a deferred for the call
+	* @returns a deferred for the call; callback will yield a tree object
 	*/
 	tree: function( options ) {
 		if ( options.path ) {
@@ -39,7 +39,7 @@
 	* 	@repo the repository
 	* 	@tree either the name of a tag or the sha of a tag/path
 	* 	@path the path
-	* @returns a deferred for the call
+	* @returns a deferred for the call; callback will yield a tree object
 	*/
 	treeAtPath: function( options ) {
 		var dr = $.Deferred();
@@ -106,7 +106,7 @@
 	* @user the user
 	* @repo the repository
 	* @sha sha of the blob
-	* @returns a deferred for the call
+	* @returns a deferred for the call; callback will yield a blob object
 	*/
 	blob: function( user, repo, sha ) {
 		return jsonCall(
@@ -120,7 +120,7 @@
 	* @user the user
 	* @repo the repository
 	* @ref the reference to retrieve
-	* @returns a reference object
+	* @returns a deferred for the call; callback will yield a reference object
 	*/
 	ref: function( user, repo, ref ) {
 		return jsonCall(
@@ -134,7 +134,7 @@
 	* @user the user
 	* @repo the repository
 	* @sha sha of the commit object to retrieve
-	* @returns a commit object
+	* @returns a deferred for the call; callback will yield a commit object
 	*/
 	commit: function( user, repo, sha ) {
 		return jsonCall(
@@ -150,7 +150,7 @@
 	* 	@repo the repository
 	* 	@tag either the name or the sha of a tag
 	* 	@path the path
-	* @returns a deferred for the call
+	* @returns a deferred for the call; callback will yield a tree object
 	*/
 	path: function( options ) {
 		var dr = $.Deferred();
