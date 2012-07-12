@@ -171,14 +171,14 @@
 	* 	@user the user
 	* 	@repo the repository
 	* 	@ref the reference to retrieve/update
-	* 	@commit sha of the commit object this ref will point to
+	* 	@sha sha of the object this ref will point to
 	* @returns a deferred for the call; callback will yield a reference object
 	*/
 	ref: function( options ) {
-		if ( options.commit ) {
+		if ( options.sha ) {
 			// POST
 			return post( api + "/repos/" + options.user + "/" + options.repo + "/git/refs/" + options.ref, {
-				sha: options.commit
+				sha: options.sha
 			} );
 		} else {
 			// GET
@@ -195,7 +195,7 @@
 	* 	@user the user
 	* 	@repo the repository
 	* 	@sha sha of the commit object to retrieve/update
-	*
+	*	@ref the reference to the commit object to retrieve/update
 	* 	@content the content of the blob to commit, base-64 encoded
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
@@ -203,8 +203,49 @@
 		if ( options.content ) {
 			// POST a commit object
 			if ( sha ) {
-				
+			} else {
+				$( this ).github('ref', {
+					user: options.user,
+					repo: options.repo,
+					ref: ref
+				});
 			}
+		} else {
+			// GET a commit object
+			return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
+		}
+	},
+
+	/**
+	* Gets or post a commit object.
+	* The commit sha has to be passed in through the sha parameter.
+	*
+	* @options:
+	* 	@user the user
+	* 	@repo the repository
+	* 	@sha sha of the commit object to retrieve/update
+	* 	@ref the reference to the commit object to retrieve/update
+	* 	@content the content of the blob to commit, base-64 encoded
+	* @returns a deferred for the call; callback will yield a commit object
+	*/
+	commitFromSHA: function( options ) {
+		if ( options.content ) {
+			var dr = $.Deferred();
+			var drd = function( ref ) { dr.resolveWith( this, [ref] ); };
+			var drf = function() { dr.reject(); };
+
+			// POST a commit object
+			post( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha )
+				.done( function(sha_new_commit) {
+					$( this ).github('ref', {
+						user: options.user,
+						repo: options.repo,
+						ref: options.ref,
+						sha: sha_new_commit
+					} ).done( drd ).fail( drf );
+				} );
+
+			return dr.promise();
 		} else {
 			// GET a commit object
 			return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
