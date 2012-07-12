@@ -154,6 +154,7 @@
 	
 				// retrieve the blob
 				opt = $.extend( {}, options );
+				delete opt.tree;
 				delete opt.path;
 				opt.sha = sha;
 				$( this ).github( 'blob', opt ).done( drd ).fail( drf );
