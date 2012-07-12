@@ -4,6 +4,9 @@
 	<script src="jquery.github-1.0.js"></script>
 	<script src="lib/jquery.base64.min.js"></script>
 	<script>
+	if (!window.btoa) window.btoa = $.base64.encode;
+	if (!window.atob) window.atob = $.base64.decode;
+
 	$(document).ready(function() {
 	});
 
@@ -30,7 +33,7 @@
     			tree: 'gh-pages',
     			path: 'test/count'
     		}).done( function( blob ) {
-    			var content = $.base64.decode( blob.content );
+    			var content = window.atob( blob.content );
 			$( '#results' ).empty().append( $( '<li>' ).html( content ) );
     		});
 	}
