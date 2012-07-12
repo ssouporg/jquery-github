@@ -146,8 +146,8 @@
 			.done( function( tree ) {
 				// look for the blob sha
 				for ( var i = 0; i < options.tree.tree.length; i ++) {
-					if (options.tree.tree[i].type == 'blob' && options.tree.tree[i].path == blobName) {
-						sha = options.tree.tree[i].sha;
+					if ( tree.tree[i].type == 'blob' && tree.tree[i].path == blobName ) {
+						sha = tree.tree[i].sha;
 					}
 				}
 	
