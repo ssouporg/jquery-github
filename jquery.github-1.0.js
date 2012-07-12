@@ -21,6 +21,8 @@
 	* 	@repo the repository
 	* 	@tree either the name of a tag or the sha of a tag/tree
 	*	@path the root path of the tree
+	*	@base_tree sha of the tree to update with new data
+	* 	@new_tree Array of Hash objects (of path, mode, type and sha) specifying a tree structure
 	* @returns a deferred for the call; callback will yield a tree object
 	*/
 	tree: function( options ) {
@@ -224,19 +226,21 @@
 	* 	@user the user
 	* 	@repo the repository
 	* 	@sha sha of the commit object to retrieve/update
-	* 	@ref the reference to the commit object to retrieve/update
+	* 	@tree sha of the new tree to associate to the new commit object
 	* 	@content the content of the blob to commit, base-64 encoded
+	* 	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
-	commitFromSHA: function( options ) {
+	commitSHA: function( options ) {
 		if ( options.content ) {
 			var dr = $.Deferred();
 			var drd = function( ref ) { dr.resolveWith( this, [ref] ); };
 			var drf = function() { dr.reject(); };
 
-			// POST a commit object
-			post( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha )
-				.done( function(sha_new_commit) {
+			// POST a commit object and update the reference to it
+			post( api + "/repos/" + options.user + "/" + options.repo + "/commits", {
+				parents: [options.sha]
+			} ).done( function(sha_new_commit) {
 					$( this ).github('ref', {
 						user: options.user,
 						repo: options.repo,
