@@ -236,6 +236,7 @@
 	* 	@sha sha of the commit object to retrieve/update
 	* 	@tree sha of the new tree to associate to the new commit object
 	* 	@content the content of the blob to commit, base-64 encoded
+	*	@message the commit message
 	* 	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
@@ -247,9 +248,11 @@
 
 			// POST a commit object and update the reference to it
 			post( api + "/repos/" + options.user + "/" + options.repo + "/commits", {
+				message: options.message
+				tree: options.tree
 				parents: [options.sha]
-			} ).done( function(sha_new_commit) {
-					$( this ).github('ref', {
+			} ).done( function( sha_new_commit ) {
+					$( this ).github( 'ref', {
 						user: options.user,
 						repo: options.repo,
 						ref: options.ref,
