@@ -165,31 +165,40 @@
 	},
 
 	/**
-	* Get a reference object.
+	* Gets/sets a reference object.
 	*
-	* @user the user
-	* @repo the repository
-	* @ref the reference to retrieve
+	* @options:
+	* 	@user the user
+	* 	@repo the repository
+	* 	@ref the reference to retrieve/update
+	* 	@commit-sha sha of the commit object this ref will point to
 	* @returns a deferred for the call; callback will yield a reference object
 	*/
-	ref: function( user, repo, ref ) {
+	ref: function( options ) {
 		return jsonCall(
 			api + "/repos/" + user + "/" + repo + "/git/refs/" + ref
 		);
 	},
 
 	/**
-	* Get a commit object.
+	* Gets or post a commit object.
 	*
-	* @user the user
-	* @repo the repository
-	* @sha sha of the commit object to retrieve
+	* @options:
+	* 	@user the user
+	* 	@repo the repository
+	* 	@sha sha of the commit object to retrieve
+	*
+	* 	@content the content of the blob to commit, base-64 encoded
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
-	commit: function( user, repo, sha ) {
-		return jsonCall(
-			api + "/repos/" + user + "/" + repo + "/commits/" + sha
-		);
+	commit: function( options ) {
+		if ( options.content ) {
+			// POST a commit object
+			if ( sha )
+		} else {
+			// GET a commit object
+			return jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
+		}
 	},
 
 	/**
