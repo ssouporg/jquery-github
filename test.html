@@ -23,21 +23,14 @@
 
 	function getBlob() {
 		$( '#results' ).empty();
-            	$().github( 'tree', {
-            		user: 'alebellu',
-            		repo: 'jquery-github',
-            		tree: 'gh-pages',
-            		path: 'test'
-            	}).done( function(tree) {
-            		$().github( 'blob', {
-            			user: 'alebellu',
-            			repo: 'jquery-github',
-            			tree: tree,
-            			name: 'count'
-            		}).done( function(blob) {
-				$( '#results' ).empty().append( $( '<li>' ).html( blob.content ) );
-            		})
-		});
+    		$().github( 'blob', {
+    			user: 'alebellu',
+    			repo: 'jquery-github',
+    			tree: 'gh-pages',
+    			path: 'test/count'
+    		}).done( function( blob ) {
+			$( '#results' ).empty().append( $( '<li>' ).html( blob.content ) );
+    		});
 	}
 	</script>
 </head>
