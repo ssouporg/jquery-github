@@ -107,7 +107,7 @@
 	blob: function( options ) {
 		var path = cleanPath( options.path );
 		if ( path ) {
-			return blobAtPath( options );
+			return $( this ).github( 'blobAtPath', options );
 		} else {
 			return jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/blobs/" + options.sha );
 		}
