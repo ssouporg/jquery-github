@@ -188,6 +188,8 @@
 
 	/**
 	* Gets or post a commit object.
+	* The commit sha can be passed in through the sha parameter. Otherwise a path
+	* can be specified and the latest commit for that path will be retrieved.
 	*
 	* @options:
 	* 	@user the user
@@ -207,34 +209,7 @@
 			// GET a commit object
 			return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
 		}
-	},
-
-	/**
-	* Gets info for a given path.
-	*
-	* @options:
-	* 	@user the user
-	* 	@repo the repository
-	* 	@tag either the name or the sha of a tag
-	* 	@path the path
-	* @returns a deferred for the call; callback will yield a tree object
-	*/
-	path: function( options ) {
-		var dr = $.Deferred();
-		var drd = function() { dr.resolve(); };
-		var drf = function() { dr.reject(); };
-
-		get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tag )
-			.done(drd).fail(drf);
-
-		return dr;
-	},
-
-	getResource: function( user, repo, tag, path ) {
-		$(this).github('tree', user)
-	},
-    commit: function() {
-    }
+	}
   }
 
   $.fn.github = function( method ) {
