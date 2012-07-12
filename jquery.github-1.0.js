@@ -198,14 +198,14 @@
 
 	/**
 	* Gets or post a commit object.
-	* The commit sha can be passed in through the sha parameter. Otherwise a heads ref
-	* can be specified and the latest commit for that head will be retrieved.
+	* In the case of a get an sha or reference to the commit object to retrieve has to be specified.
+	* In the case of a post an sha or reference to the parent commit object has to be specified.
 	*
 	* @options:
 	* 	@user the user
 	* 	@repo the repository
 	* 	@sha sha of the commit object to retrieve/update
-	*	@head_ref ref to an head
+	*	@commit_ref ref to a commit object
 	*	@tree sha of the tree to associate to the commit object.
 	* 	@new_tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure to
 	* 	      associate to the new commit object.
@@ -223,25 +223,27 @@
 				return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
 			}
 		} else {
-			return $( this ).github( 'commitToHead', options );
+			// resolve commit sha first
+			var dr = $.Deferred();
+			var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
+			var drf = function() { dr.reject(); };
+
+			var opt = $.extend( { ref: options.commit_ref }, options );
+			delete opt.commit_ref;
+			$( this ).github( 'ref', opt )
+				.done( function( ref ) {
+					if ( ref.object && ref.object.type == 'commit' ) {
+						opt.tree = ref.object.sha;
+						$( this ).github( 'commit', opt ).done( drd ).fail( drf );
+					} else {
+						// commit object not found
+						drf();
+					}
+				} )
+				.fail( drf );
+
+			return dr.promise();
 		}
-	},
-
-	commitToHead: function( options ) {
-		var dr = $.Deferred();
-		var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
-		var drf = function() { dr.reject(); };
-
-		var opt = $.extend( { ref: options.head_ref }, options );
-		delete opt.head_ref;
-		$( this ).github( 'ref', opt )
-			.done( function( ref ) {
-				opt.tree = ref.object.sha;
-				$( this ).github( 'commit', opt ).done( drd ).fail( drf );
-			} )
-			.fail( drf );
-
-		return dr.promise();
 	},
 
 	/**
