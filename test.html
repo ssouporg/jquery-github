@@ -26,9 +26,15 @@
             	$().github( 'tree', {
             		user: 'alebellu',
             		repo: 'jquery-github',
-            		tree: 'gh-pages'
+            		tree: 'gh-pages',
+            		path: 'test'
             	}).done(function(tree) {
-            		$().github( 'blob', 'alebellu', 'jquery-github', 'gh-pages', '/test/count' ).done(function(blob) {
+            		$().github( 'blob', {
+            			user: 'alebellu',
+            			repo: 'jquery-github',
+            			tree: tree,
+            			name: 'count'
+            		}).done(function(blob) {
 				$( '#results' ).append( $( '<li>' ).html( blob ) );
             		})
 		});
