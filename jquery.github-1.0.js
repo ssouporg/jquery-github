@@ -159,8 +159,8 @@
 			.fail( drf );
 
 		return dr.promise();
-	}
-				
+	},
+
 	/**
 	* Get a reference object.
 	*
