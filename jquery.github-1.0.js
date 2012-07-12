@@ -27,7 +27,7 @@
 		if ( options.path ) {
 			return $( this ).github( 'treeAtPath', options );
 		} else {
-			return jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
+			return get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
 		}
 	},
 
@@ -109,7 +109,7 @@
 		if ( path ) {
 			return $( this ).github( 'blobAtPath', options );
 		} else {
-			return jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/blobs/" + options.sha );
+			return get( api + "/repos/" + options.user + "/" + options.repo + "/git/blobs/" + options.sha );
 		}
 	},
 
@@ -175,9 +175,7 @@
 	* @returns a deferred for the call; callback will yield a reference object
 	*/
 	ref: function( options ) {
-		return jsonCall(
-			api + "/repos/" + user + "/" + repo + "/git/refs/" + ref
-		);
+		return get( api + "/repos/" + user + "/" + repo + "/git/refs/" + ref );
 	},
 
 	/**
@@ -186,7 +184,7 @@
 	* @options:
 	* 	@user the user
 	* 	@repo the repository
-	* 	@sha sha of the commit object to retrieve
+	* 	@sha sha of the commit object to retrieve/update
 	*
 	* 	@content the content of the blob to commit, base-64 encoded
 	* @returns a deferred for the call; callback will yield a commit object
@@ -197,7 +195,7 @@
 			if ( sha )
 		} else {
 			// GET a commit object
-			return jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
+			return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
 		}
 	},
 
@@ -216,7 +214,7 @@
 		var drd = function() { dr.resolve(); };
 		var drf = function() { dr.reject(); };
 
-		jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tag )
+		get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tag )
 			.done(drd).fail(drf);
 
 		return dr;
@@ -250,27 +248,20 @@
 	return path;
   }
 
-  function jsonCall( url ) {
+  function get( url ) {
 	return jQuery.ajax({
 		url: url,
+		type: 'GET',
 		dataType: "json",
 	});
   }
 
-  function jsonpCall( url, callbackContext, callback, failCallback ) {
-	/* No proper handling of error 404, ie fail is not fired => using jquery-jsonp plugin. */
-	/*jQuery.ajax({
+  function post( url ) {
+	return jQuery.ajax({
 		url: url,
-		dataType: "jsonp",
-		jsonpCallback: "resource"
-	}).done(callback).fail(failCallback);*/
-
-	jQuery.jsonp({
-		url: url,
-		callback: "resource",
-        context: callbackContext,
-		success: callback,
-		error: failCallback
+		type: 'POST',
+		dataType: "json",
 	});
   }
+
 })( jQuery );
