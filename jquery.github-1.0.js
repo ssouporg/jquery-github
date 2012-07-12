@@ -129,6 +129,20 @@
 	},
 
 	/**
+	* Get a commit object.
+	*
+	* @user the user
+	* @repo the repository
+	* @sha sha of the commit object to retrieve
+	* @returns a commit object
+	*/
+	commit: function( user, repo, sha ) {
+		return jsonCall(
+			api + "/repos/" + user + "/" + repo + "/commits/" + sha
+		);
+	},
+
+	/**
 	* Gets info for a given path.
 	*
 	* @options:
