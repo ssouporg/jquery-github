@@ -2,6 +2,7 @@
 <head>
 	<script src="http://code.jquery.com/jquery-1.7.2.js"></script>
 	<script src="jquery.github-1.0.js"></script>
+	<script src="lib/jquery.base64.min.js" />
 	<script>
 	$(document).ready(function() {
 	});
@@ -29,7 +30,8 @@
     			tree: 'gh-pages',
     			path: 'test/count'
     		}).done( function( blob ) {
-			$( '#results' ).empty().append( $( '<li>' ).html( blob.content ) );
+    			var content = $.base64.decode( blob.content );
+			$( '#results' ).empty().append( $( '<li>' ).html( content ) );
     		});
 	}
 	</script>
