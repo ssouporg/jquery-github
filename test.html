@@ -7,13 +7,13 @@
 	});
 
 	function getTree( path ) {
-		$ ('#results' ).empty();
+		$( '#results' ).empty();
             	$().github( 'tree', {
             		user: 'alebellu',
             		repo: 'jquery-github',
             		tree: 'gh-pages',
             		path: path
-            	}).done(function(tree) {
+            	}).done( function(tree) {
 			for (var i = 0; i < tree.tree.length ; i ++) {
 				var el = tree.tree[i];
 				$( '#results' ).empty().append( $( '<li>' ).html( el.path + " " + el.size ) );
@@ -22,19 +22,19 @@
 	}
 
 	function getBlob() {
-		$ ('#results' ).empty();
+		$( '#results' ).empty();
             	$().github( 'tree', {
             		user: 'alebellu',
             		repo: 'jquery-github',
             		tree: 'gh-pages',
             		path: 'test'
-            	}).done(function(tree) {
+            	}).done( function(tree) {
             		$().github( 'blob', {
             			user: 'alebellu',
             			repo: 'jquery-github',
             			tree: tree,
             			name: 'count'
-            		}).done(function(blob) {
+            		}).done( function(blob) {
 				$( '#results' ).empty().append( $( '<li>' ).html( blob.content ) );
             		})
 		});
