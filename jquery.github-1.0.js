@@ -115,6 +115,20 @@
 	},
 
 	/**
+	* Get a reference object.
+	*
+	* @user the user
+	* @repo the repository
+	* @ref the reference to retrieve
+	* @returns a reference object
+	*/
+	ref: function( user, repo, ref ) {
+		return jsonCall(
+			api + "/repos/" + user + "/" + repo + "/git/refs/" + ref
+		);
+	},
+
+	/**
 	* Gets info for a given path.
 	*
 	* @options:
