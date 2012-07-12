@@ -16,7 +16,7 @@
             	}).done(function(tree) {
 			for (var i = 0; i < tree.tree.length ; i ++) {
 				var el = tree.tree[i];
-				$( '#results' ).append( $( '<li>' ).html( el.path + " " + el.size ) );
+				$( '#results' ).empty().append( $( '<li>' ).html( el.path + " " + el.size ) );
 			}
 		});
 	}
@@ -35,7 +35,7 @@
             			tree: tree,
             			name: 'count'
             		}).done(function(blob) {
-				$( '#results' ).append( $( '<li>' ).html( blob.content ) );
+				$( '#results' ).empty().append( $( '<li>' ).html( blob.content ) );
             		})
 		});
 	}
