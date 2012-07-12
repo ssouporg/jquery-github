@@ -236,7 +236,7 @@
 		delete opt.head_ref;
 		$( this ).github( 'ref', opt )
 			.done( function( ref ) {
-				opt.tree = ref.sha;
+				opt.tree = ref.object.sha;
 				$( this ).github( 'commit', opt ).done( drd ).fail( drf );
 			} )
 			.fail( drf );
