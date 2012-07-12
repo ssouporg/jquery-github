@@ -207,20 +207,14 @@
 	* 	@sha sha of the commit object to retrieve/update
 	* 	@tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure to
 	* 	      associate to the new commit object.
-	* 	@content the content of the blob to commit, base-64 encoded
-	*	@path
 	*	@message the commit message
 	*	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
 	commit: function( options ) {
-		if ( options.tree || options.content ) {
+		if ( options.tree ) {
 			// POST a commit object
-			if ( options.tree ) {
-				return $( this ).github( 'commitTree', options );
-			} else {
-				return $( this ).github( 'commitContent', options );
-			}
+			return $( this ).github( 'commitTree', options );
 		} else {
 			// GET a commit object
 			return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
