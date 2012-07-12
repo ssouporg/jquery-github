@@ -14,7 +14,7 @@
 	},
 
 	/**
-	* Gets info for a given tree.
+	* Gets info for a given tree, given a tree sha/tag name and optionally a path relative to it.
 	*
 	* @options:
 	* 	@user the user
@@ -46,14 +46,7 @@
 		var drd = function( tree ) { dr.resolveWith( this, [tree] ); };
 		var drf = function() { dr.reject(); };
 
-		var path = options.path;
-		if ( path ) {
-			// clean the path
-			path = path.trim();
-			if ( path[0] == '/' ) {
-				path = path.substring( 1, path.length );
-			}
-		}
+		var path = cleanPath(options.path);
 
 		var opt = $.extend( {}, options );
 		delete opt.path;
@@ -101,30 +94,73 @@
 	},
 
 	/**
-	* Get blob content given its sha or the parent tree and the name of the blob.
+	* Get blob content given its sha or a tree and the path of the blob relative to that tree.
 	*
 	* @options:
 	* 	@user the user
 	* 	@repo the repository
-	* 	@tree sha of a tree object containing the blob
-	* 	@name the name of the blob
 	* 	@sha sha of the blob
+	* 	@tree sha of a tree object containing the blob
+	* 	@path the path of the blob to retrieve, with respect to the tree object
 	* @returns a deferred for the call; callback will yield a blob object
 	*/
 	blob: function( options ) {
-		var sha = options.sha;
-		if ( !sha ) {
-			for ( var i = 0; i < options.tree.tree.length; i ++) {
-				if (options.tree.tree[i].type == 'blob' && options.tree.tree[i].path == options.name) {
-					sha = options.tree.tree[i].sha;
-				}
-			}
+		var path = cleanPath( options.path );
+		if ( path ) {
+			return blobAtPath( options );
+		} else {
+			return jsonCall( api + "/repos/" + options.user + "/" + options.repo + "/git/blobs/" + options.sha );
 		}
-		return jsonCall(
-			api + "/repos/" + options.user + "/" + options.repo + "/git/blobs/" + sha
-		);
 	},
 
+	/**
+	* Get blob content given a tree and the path of the blob relative to that tree.
+	*
+	* @options:
+	* 	@user the user
+	* 	@repo the repository
+	* 	@tree either the name of a tag or the sha of a tag/path
+	* 	@path the path
+	* @returns a deferred for the call; callback will yield a blob object
+	*/
+	blobAtPath: function( options ) {
+		var dr = $.Deferred();
+		var drd = function( blob ) { dr.resolveWith( this, [blob] ); };
+		var drf = function() { dr.reject(); };
+
+		var path = cleanPath(options.path);
+		// extract last blob name from path
+		var indexOfSlash = path.lastIndexOf( '/' );
+		var blobName;
+		if ( indexOfSlash > 0 ) {
+			blobName = path.substring( indexOfSlash + 1 );
+			path = path.substring( 0, indexOfSlash );
+		} else {
+			blobName = path;
+			path = null;
+		}
+
+		var opt = $.extend( {}, options );
+		opt.path = path;
+		$( this ).github( 'tree', opt )
+			.done( function( tree ) {
+				// look for the blob sha
+				for ( var i = 0; i < options.tree.tree.length; i ++) {
+					if (options.tree.tree[i].type == 'blob' && options.tree.tree[i].path == blobName) {
+						sha = options.tree.tree[i].sha;
+					}
+				}
+	
+				// retrieve the blob
+				opt = $.extend( {}, options );
+				delete opt.path;
+				$( this ).github( 'blob', opt ).done( drd ).fail( drf );
+			} )
+			.fail( drf );
+
+		return dr.promise();
+	}
+				
 	/**
 	* Get a reference object.
 	*
@@ -190,6 +226,17 @@
       $.error( 'Method ' +  method + ' does not exist on jQuery.github' );
     }
   };
+
+  function cleanPath( path ) {
+	if ( path ) {
+		// clean the path
+		path = path.trim();
+		if ( path[0] == '/' ) {
+			path = path.substring( 1, path.length );
+		}
+	}
+	return path;
+  }
 
   function jsonCall( url ) {
 	return jQuery.ajax({
