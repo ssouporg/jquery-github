@@ -145,7 +145,7 @@
 		$( this ).github( 'tree', opt )
 			.done( function( tree ) {
 				// look for the blob sha
-				for ( var i = 0; i < options.tree.tree.length; i ++) {
+				for ( var i = 0; i < tree.tree.length; i ++) {
 					if ( tree.tree[i].type == 'blob' && tree.tree[i].path == blobName ) {
 						sha = tree.tree[i].sha;
 					}
