@@ -58,9 +58,12 @@
 	    		$().github( 'commit', {
 	    			user: 'alebellu',
 	    			repo: 'jquery-github',
+	    			commit_ref: 'gh-pages',
 	    			tree: 'gh-pages',
-	    			path: 'test/count',
-	    			content: encodedContent
+	    			new_tree: [{
+					path: 'test/count',
+	    				content: encodedContent
+	    			}]
 	    		}).done( function() {
 		    		getBlob();
 	    		});
