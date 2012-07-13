@@ -14,7 +14,7 @@
 			"&scope=" + options.scope;
 	},
 
-	isAuthorized: function() {
+	authorized: function() {
 		return getUrlVars().access_token != undefined;
 	},
 
