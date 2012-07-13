@@ -13,10 +13,11 @@
 			if ( $().github( 'accessToken' ) ) {
 				$( 'action auth' ).removeAttr( 'disabled' );
 			} else {
-				$().github( 'accessTokenURL', {
+				var accessTokenURL = $().github( 'accessTokenURL', {
 					client_id: '8fd6c4f32a7af4fd44c7',
 					client_secret: 'b52bbc3e2fdf407d444c0d6a302debb85b240641'
-				} );	
+				} );
+				window.location.href = accessTokenURL;
 			}
 		}
 		else {
