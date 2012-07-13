@@ -57,6 +57,7 @@
 		return "https://github.com/login/oauth/access_token?" +
 			"client_id=" + options.client_id +
 			"&client_secret=" + options.client_secret +
+			"&redirect_uri=" + window.location.href +
 			"&code=" + code
 			"&state=" + state;
 	},
