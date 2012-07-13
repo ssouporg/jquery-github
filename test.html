@@ -9,7 +9,7 @@
 	if (!window.atob) window.atob = $.base64.decode;
 
 	$(document).ready(function() {
-		if ( $().github( 'authorized' ) ) {
+		/*if ( $().github( 'authorized' ) ) {
 			if ( $().github( 'accessToken' ) ) {
 				$( 'action auth' ).removeAttr( 'disabled' );
 			} else {
@@ -22,7 +22,7 @@
 		}
 		else {
 			$( 'action auth' ).attr( 'disabled', 'disabled' );
-		}
+		}*/
 	});
 
 	function authorize() {
