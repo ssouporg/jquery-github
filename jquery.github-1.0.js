@@ -15,12 +15,12 @@
 	 *
 	 * @credentials
 	 */
-	encodedCredentials( credentials ) {
+	encodedCredentials: function( credentials ) {
 		if ( credentials ) {
 			encodedCredentials = credentials;
 		}
 		return encodedCredentials;
-	}
+	},
 
 	authorizeURL: function( options ) {
 		return "https://github.com/login/oauth/authorize?" +
