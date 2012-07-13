@@ -44,6 +44,16 @@
 		return dr.promise();
 	},
 
+	accessTokenURL: function( options ) {
+		var code = getUrlVars().code;
+		var state = getUrlVars().state;
+		return "https://github.com/login/oauth/access_token?" +
+			"client_id=" + options.client_id +
+			"&client_secret=" + options.client_secret +
+			"&code=" + code
+			"&state=" + state;
+	},
+
 	/**
 	 * Returns the github raw URL of a given resource.
 	 */
