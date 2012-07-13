@@ -52,6 +52,9 @@
 	 *	@state The state received as a response to auth phase
 	 */
 	accessTokenURL: function( options ) {
+		// Cross-origin-policy problems, see:
+		// http://blog.vjeux.com/2012/javascript/github-oauth-login-browser-side.html
+		// switching back to basic auth to avoid server code
 		var code = getUrlVars().code;
 		var state = getUrlVars().state;
 		return "https://github.com/login/oauth/access_token?" +
