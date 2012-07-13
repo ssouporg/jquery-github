@@ -2,6 +2,8 @@
 
   var api = "https://api.github.com";
 
+  var access_token;
+
   var methods = {
 	init: function( options ) {
 	},
@@ -14,6 +16,32 @@
 
 	isAuthorized: function() {
 		return getUrlVars().access_token != undefined;
+	},
+
+	/**
+	 * Given the temporary code and state from github, this method will get the access_token and
+	 * store it for use in subsequent calls
+	 *
+	 * @options:
+	 *	@client_id  The client ID received from GitHub when the application was registered.
+	 *	@redirect_uri
+	 *	@client_secret The client secret received from GitHub when the application was registered.
+	 *	@code The code received as a response to auth phase
+	 *	@state The state received as a response to auth phase
+	 */
+	accessToken: function( options ) {
+		var dr = $.Deferred();
+		var drd = function( access_token ) { dr.resolveWith( this, [access_token] ); };
+		var drf = function() { dr.reject(); };
+
+		post( 'https://github.com/login/oauth/access_token', options )
+			.done( function( token ) {
+				access_token = token;
+				drd( access_token );
+			} )
+			.fail( drf );
+
+		return dr.promise();
 	},
 
 	/**
