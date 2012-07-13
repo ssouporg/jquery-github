@@ -431,7 +431,7 @@
 	return jQuery.ajax({
 		url: url,
 		type: 'POST',
-		data: data,
+		data: JSON.stringify(data, null, 2),
 		dataType: "json",
 		headers: { "Authorization": "Basic " + encodedCredentials }
 	});
