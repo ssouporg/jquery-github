@@ -423,7 +423,8 @@
 		url: url,
 		type: 'GET',
 		dataType: "json",
-		headers: { "Authorization": "Basic " + encodedCredentials }
+		headers: { "Authorization": "Basic " + encodedCredentials },
+		cache: false
 	});
   }
 
@@ -433,7 +434,8 @@
 		type: 'POST',
 		data: JSON.stringify(data, null, 2),
 		dataType: "json",
-		headers: { "Authorization": "Basic " + encodedCredentials }
+		headers: { "Authorization": "Basic " + encodedCredentials },
+		cache: false
 	});
   }
 
