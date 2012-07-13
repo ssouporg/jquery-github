@@ -10,11 +10,11 @@
 		return "https://github.com/login/oauth/authorize?" +
 			"client_id=" + options.client_id +
 			"&scope=" + options.scope;
-	}
+	},
 
 	function isAuthorized() {
 		return getUrlVars().access_token != undefined;
-	}
+	},
 
 	/**
 	 * Returns the github raw URL of a given resource.
