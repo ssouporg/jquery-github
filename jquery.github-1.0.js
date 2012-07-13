@@ -384,15 +384,11 @@
   }
 
   function get( url ) {
-  	if ( access_token ) {
-		return jQuery.ajax({
-			url: url,
-			type: 'GET',
-			dataType: "json",
-		});
-  	} else {
-  		
-  	}
+	return jQuery.ajax({
+		url: url,
+		type: 'GET',
+		dataType: "json",
+	});
   }
 
   function post( url, data ) {
