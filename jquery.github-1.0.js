@@ -4,8 +4,11 @@
 
   var access_token;
 
+  var encodedCredentials;
+
   var methods = {
 	init: function( options ) {
+		encodedCredentials = options.encodedCredentials;
 	},
 
 	authorizeURL: function( options ) {
@@ -409,6 +412,7 @@
 		url: url,
 		type: 'GET',
 		dataType: "json",
+		headers: { "Authorization", "Basic " + encodedCredentials }
 	});
   }
 
@@ -418,6 +422,7 @@
 		type: 'POST',
 		data: data,
 		dataType: "json",
+		headers: { "Authorization", "Basic " + encodedCredentials }
 	});
   }
 
