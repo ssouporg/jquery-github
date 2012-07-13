@@ -15,7 +15,7 @@
 	},
 
 	authorized: function() {
-		return getUrlVars().access_token != undefined;
+		return getUrlVars().code != undefined;
 	},
 
 	/**
