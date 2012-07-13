@@ -368,7 +368,7 @@
 					$( this ).github( 'ref', {
 						user: options.user,
 						repo: options.repo,
-						ref: options.commit_ref,
+						ref: options.ref,
 						sha: new_commit.sha
 					} ).done( drd ).fail( drf );
 				} );
