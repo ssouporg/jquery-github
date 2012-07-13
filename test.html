@@ -11,6 +11,13 @@
 	$(document).ready(function() {
 	});
 
+	function authorize() {
+		var authURL = $().github( 'authorizeURL', {
+			client_id: '8fd6c4f32a7af4fd44c7',
+			scope: 'repo'
+		});
+	}
+
 	function getTree( path ) {
 		$( '#results' ).empty();
             	$().github( 'tree', {
@@ -75,6 +82,7 @@
 <body>
 	<div id="content">
 		<h1>JQuery GitHub Library Test</h1>
+		<input type="button" value="Authorize" onclick="authorize()" />
 		<input type="button" value="Get root tree" onclick="getTree()" />
 		<input type="button" value="Get tree at path 'test'" onclick="getTree('test')" />
 		<input type="button" value="Get blob 'test/count'" onclick="getBlob()" />
