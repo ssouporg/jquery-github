@@ -252,7 +252,7 @@
 			$( this ).github( 'ref', opt )
 				.done( function( ref ) {
 					if ( ref.object && ref.object.type == 'commit' ) {
-						opt.tree = ref.object.sha;
+						opt.sha = ref.object.sha;
 						$( this ).github( 'commit', opt ).done( drd ).fail( drf );
 					} else {
 						// commit object not found
