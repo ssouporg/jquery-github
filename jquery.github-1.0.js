@@ -8,8 +8,19 @@
 
   var methods = {
 	init: function( options ) {
-		encodedCredentials = options.encodedCredentials;
 	},
+
+	/**
+	 * Gets/sets encoded credentials in the form required by http basic authentication, user:pwd base64 encoded.
+	 *
+	 * @credentials
+	 */
+	encodedCredentials( credentials ) {
+		if ( credentials ) {
+			encodedCredentials = credentials;
+		}
+		return encodedCredentials;
+	}
 
 	authorizeURL: function( options ) {
 		return "https://github.com/login/oauth/authorize?" +
