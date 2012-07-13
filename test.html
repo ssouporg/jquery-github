@@ -77,7 +77,7 @@
     			path: 'test/count'
     		}).done( function( blob ) {
     			var content = window.atob( blob.content.trim() );
-    			content = '' + eval( content ) + 1;
+    			content = '' + (parseInt( content ) + 1);
     			var encodedContent = window.btoa( content );
 	    		$().github( 'commit', {
 	    			user: 'alebellu',
