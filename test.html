@@ -13,7 +13,12 @@
 			$().github( 'accessToken', {
 				client_id: '8fd6c4f32a7af4fd44c7',
 				client_secret: 'b52bbc3e2fdf407d444c0d6a302debb85b240641'
+			} ).done( function() {
+				$( 'action auth' ).enable();
 			} );	
+		}
+		else {
+			$( 'action auth' ).disable();
 		}
 	});
 
@@ -89,11 +94,11 @@
 <body>
 	<div id="content">
 		<h1>JQuery GitHub Library Test</h1>
-		<input type="button" value="Authorize" onclick="authorize()" />
-		<input type="button" value="Get root tree" onclick="getTree()" />
-		<input type="button" value="Get tree at path 'test'" onclick="getTree('test')" />
-		<input type="button" value="Get blob 'test/count'" onclick="getBlob()" />
-		<input type="button" value="Increase 'test/count'" onclick="increaseCount()" />
+		<input type="button" class="auth" value="Authorize" onclick="authorize()" />
+		<input type="button" class="action no-auth" value="Get root tree" onclick="getTree()" />
+		<input type="button" class="action no-auth" value="Get tree at path 'test'" onclick="getTree('test')" />
+		<input type="button" class="action no-auth" value="Get blob 'test/count'" onclick="getBlob()" />
+		<input type="button" class="action auth" value="Increase 'test/count'" onclick="increaseCount()" />
 		<hr />
 		<ul id="results" />
 	</div>
