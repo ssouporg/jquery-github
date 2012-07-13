@@ -28,8 +28,8 @@
 		if ( options.new_tree ) {
 			// POST a new tree
 			return post( api + "/repos/" + options.user + "/" + options.repo + "/git/trees", {
-				base_tree: tree,
-				tree: new_tree
+				base_tree: options.tree,
+				tree: options.new_tree
 			} );
 		} else {
 			// GETS a tree
