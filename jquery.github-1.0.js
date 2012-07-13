@@ -364,12 +364,12 @@
 				message: options.message,
 				tree: options.tree,
 				parents: [options.sha]
-			} ).done( function( sha_new_commit ) {
+			} ).done( function( new_commit ) {
 					$( this ).github( 'ref', {
 						user: options.user,
 						repo: options.repo,
-						ref: options.ref,
-						sha: sha_new_commit
+						ref: options.commit_ref,
+						sha: new_commit.sha
 					} ).done( drd ).fail( drf );
 				} );
 
