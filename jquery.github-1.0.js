@@ -19,18 +19,18 @@
 	},
 
 	/**
-	 * Given the temporary code and state from github, this method will get the access_token and
-	 * store it for use in subsequent calls
+	 * Sets/Gets the access token
 	 *
-	 * @options:
-	 *	@client_id  The client ID received from GitHub when the application was registered.
-	 *	@redirect_uri
-	 *	@client_secret The client secret received from GitHub when the application was registered.
-	 *	@code The code received as a response to auth phase
-	 *	@state The state received as a response to auth phase
+	 * @token the access token to set
+	 * @return the access token
 	 */
-	accessToken: function( options ) {
-		var dr = $.Deferred();
+	accessToken: function( token ) {
+		if ( token ) {
+			$( this ).data( 'access_token', token );
+		} else {
+			return $( this ).data( 'access_token' );
+		}
+		/*var dr = $.Deferred();
 		var drd = function( access_token ) { dr.resolveWith( this, [access_token] ); };
 		var drf = function() { dr.reject(); };
 
@@ -41,9 +41,20 @@
 			} )
 			.fail( drf );
 
-		return dr.promise();
+		return dr.promise();*/
 	},
 
+	/**
+	 * Given the temporary code and state from github, this method will build the URL
+	 * to redirect the user in order to get the access_token for use in subsequent calls
+	 *
+	 * @options:
+	 *	@client_id  The client ID received from GitHub when the application was registered.
+	 *	@redirect_uri
+	 *	@client_secret The client secret received from GitHub when the application was registered.
+	 *	@code The code received as a response to auth phase
+	 *	@state The state received as a response to auth phase
+	 */
 	accessTokenURL: function( options ) {
 		var code = getUrlVars().code;
 		var state = getUrlVars().state;
