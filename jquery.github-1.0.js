@@ -288,8 +288,8 @@
 
 			// POST a commit object and update the reference to it
 			post( api + "/repos/" + options.user + "/" + options.repo + "/commits", {
-				message: options.message
-				tree: options.tree
+				message: options.message,
+				tree: options.tree,
 				parents: [options.sha]
 			} ).done( function( sha_new_commit ) {
 					$( this ).github( 'ref', {
