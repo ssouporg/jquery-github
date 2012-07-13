@@ -19,17 +19,13 @@
 	},
 
 	/**
-	 * Sets/Gets the access token
+	 * Read the access token from url
 	 *
 	 * @token the access token to set
 	 * @return the access token
 	 */
 	accessToken: function( token ) {
-		if ( token ) {
-			$( this ).data( 'access_token', token );
-		} else {
-			return $( this ).data( 'access_token' );
-		}
+		return getUrlVars().access_token;
 		/*var dr = $.Deferred();
 		var drd = function( access_token ) { dr.resolveWith( this, [access_token] ); };
 		var drf = function() { dr.reject(); };
