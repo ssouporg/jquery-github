@@ -360,7 +360,7 @@
 			var drf = function() { dr.reject(); };
 
 			// POST a commit object and update the reference to it
-			post( api + "/repos/" + options.user + "/" + options.repo + "/commits", {
+			post( api + "/repos/" + options.user + "/" + options.repo + "/git/commits", {
 				message: options.message,
 				tree: options.tree,
 				parents: [options.sha]
