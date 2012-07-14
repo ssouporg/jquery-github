@@ -8,6 +8,8 @@
 	if (!window.btoa) window.btoa = $.base64.encode;
 	if (!window.atob) window.atob = $.base64.decode;
 
+	var GITHUB_CLIENT_ID = '8fd6c4f32a7af4fd44c7';
+
 	$(document).ready(function() {
 		$('.auth.basic').on( 'focus click', function() {
 			$( 'input:radio[name=authType]' ).filter( '[value=basic]' ).attr( 'checked', true );
@@ -29,14 +31,14 @@
 		if (auth.type == 'basic' ) {
 			auth.encodedCredentials = window.btoa( $( '#user' ).val() + ':' + $( '#pwd' ).val() );
 		} else if (auth.type == 'oauth' ) {
-			auth.client_id = '8fd6c4f32a7af4fd44c7';
+			auth.client_id = GITHUB_CLIENT_ID;
 		}
 		$().github( 'authorization', auth );
 	}
 
 	function authorizeOAuth() {
 		var authURL = $().github( 'authorizeURL', {
-			client_id: '8fd6c4f32a7af4fd44c7',
+			client_id: GITHUB_CLIENT_ID,
 			scope: 'repo'
 		});
 		window.open(authURL);
