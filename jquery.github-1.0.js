@@ -22,10 +22,13 @@
 		return encodedCredentials;
 	},
 
-	authorizeURL: function( options ) {
-		return "https://github.com/login/oauth/authorize?" +
+	oauth: function( options ) {
+		var oauthURL = "https://github.com/login/oauth/authorize?" +
 			"client_id=" + options.client_id +
 			"&scope=" + options.scope;
+
+		// open a new window for authentication
+		window.open(authURL);
 	},
 
 	authorized: function() {
