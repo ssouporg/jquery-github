@@ -12,6 +12,6 @@ function getUrlVars()
   return vars;
 }
 
-window.opener.postMessage(getUrlVars().code, window.location);
+window.opener.postMessage( getUrlVars().code, window.location );
 window.close();
 </script>
