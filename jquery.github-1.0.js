@@ -33,6 +33,7 @@
 
 		$( window ).on( 'message', function(event) {
 			auth.code = event.originalEvent.data;
+			auth.state = event.originalEvent.state;
 
 			get( options.github_oauth_tunnel, auth, function ( token ) {
 				auth.access_token = access_token;
@@ -48,31 +49,6 @@
 
 	authorized: function() {
 		return getUrlVars().code != undefined;
-	},
-
-	/**
-	 * Given the temporary code and state from github, this method will build the URL
-	 * to redirect the user in order to get the access_token for use in subsequent calls
-	 *
-	 * @options:
-	 *	@client_id  The client ID received from GitHub when the application was registered.
-	 *	@redirect_uri
-	 *	@client_secret The client secret received from GitHub when the application was registered.
-	 *	@code The code received as a response to auth phase
-	 *	@state The state received as a response to auth phase
-	 */
-	accessTokenURL: function( options ) {
-		// Cross-origin-policy problems, see:
-		// http://blog.vjeux.com/2012/javascript/github-oauth-login-browser-side.html
-		// switching back to basic auth to avoid server code
-		var code = getUrlVars().code;
-		var state = getUrlVars().state;
-		return "https://github.com/login/oauth/access_token?" +
-			"client_id=" + options.client_id +
-			"&client_secret=" + options.client_secret +
-			"&redirect_uri=" + window.location.href +
-			"&code=" + code
-			"&state=" + state;
 	},
 
 	/**
