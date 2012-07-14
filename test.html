@@ -38,8 +38,13 @@
 
 	function authorizeOAuth() {
 		$().github( 'oauth', {
+			github_oauth_tunnel: 'http://github-oauth-token.appspot.com/',
 			client_id: GITHUB_CLIENT_ID,
 			scope: 'repo'
+		} ).done( function( auth ) {
+			$( '#code' ).val( auth.code );
+			$( '#state' ).val( auth.state );
+			$( '#access_token' ).val( auth.access_token );
 		});
 	}
 
@@ -123,6 +128,7 @@
 				<input type="radio" name="authType" value="oauth">OAuth</input>
 				<input class="auth oauth" type="button" value="Login" onclick="authorizeOAuth()" />
 				<input type="hidden" id="code" />
+				<input type="hidden" id="state" />
 				<input type="hidden" id="access_token" />
 				<label>username <input type="text" id="username" readonly></input></label>
 			</div>
