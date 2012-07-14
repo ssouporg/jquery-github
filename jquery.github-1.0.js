@@ -13,7 +13,7 @@
 	 *
 	 * @credentials
 	 */
-	authentication: function( authOptions ) {
+	auth: function( authOptions ) {
 		if ( authOptions ) {
 			auth = authOptions;
 		}
