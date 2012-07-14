@@ -33,28 +33,6 @@
 	},
 
 	/**
-	 * Read the access token from url
-	 *
-	 * @token the access token to set
-	 * @return the access token
-	 */
-	accessToken: function( token ) {
-		return getUrlVars().access_token;
-		/*var dr = $.Deferred();
-		var drd = function( access_token ) { dr.resolveWith( this, [access_token] ); };
-		var drf = function() { dr.reject(); };
-
-		post( 'https://github.com/login/oauth/access_token', options )
-			.done( function( token ) {
-				access_token = token;
-				drd( access_token );
-			} )
-			.fail( drf );
-
-		return dr.promise();*/
-	},
-
-	/**
 	 * Given the temporary code and state from github, this method will build the URL
 	 * to redirect the user in order to get the access_token for use in subsequent calls
 	 *
