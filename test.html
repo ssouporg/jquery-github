@@ -105,13 +105,13 @@
 		<fieldset>
 			<legend>Authentication</legend>
 			<div>
-				<input type="radio" name="authType" />
+				<input type="radio" name="authType" value="Basic authentication" />
 				<input class="auth basic" type="text" id="user" />
 				<input class="auth basic" type="password" id="pwd" />
 				<input class="auth basic" type="button" value="Set basic auth data" onclick="authorizeBasic()" />
 			</div>
 			<div>
-				<input type="radio" name="authType" />
+				<input type="radio" name="authType" value="OAuth" />
 				<input class="auth oauth" type="button" value="OAuth" onclick="authorizeOAuth()" />
 			</div>
 		</fieldset>
