@@ -10,15 +10,15 @@
 
 	var GITHUB_CLIENT_ID = '8fd6c4f32a7af4fd44c7';
 
-	$(document).ready(function() {
-		$('.auth.basic').on( 'focus click', function() {
+	$( document ).ready(function() {
+		$( '.auth.basic' ).on( 'focus click', function() {
 			$( 'input:radio[name=authType]' ).filter( '[value=basic]' ).attr( 'checked', true );
 		} );
-		$('.auth.oauth').on( 'focus click', function() {
+		$( '.auth.oauth' ).on( 'focus click', function() {
 			$( 'input:radio[name=authType]' ).filter( '[value=oauth]' ).attr( 'checked', true );
 		} );
 
-		$('.auth').on( 'change', setAuth);
+		$( '.auth' ).on( 'change', setAuth);
 
 		$( 'input:radio[name=authType]' ).on('change', function() {
 			setAuth();
