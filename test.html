@@ -12,6 +12,9 @@
 		$('.auth.basic').on( 'focus click', function() {
 			$( 'input:radio[name=authType]' ).filter( '[value=basic]' ).attr( 'checked', true );
 		} );
+		$('.auth.oauth').on( 'focus click', function() {
+			$( 'input:radio[name=authType]' ).filter( '[value=oauth]' ).attr( 'checked', true );
+		} );
 		/*if ( $().github( 'authorized' ) ) {
 			if ( $().github( 'accessToken' ) ) {
 				$( 'action auth' ).removeAttr( 'disabled' );
