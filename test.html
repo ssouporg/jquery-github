@@ -102,10 +102,19 @@
 <body>
 	<div id="content">
 		<h1>JQuery GitHub Library Test</h1>
-		<input type="text" id="user" />
-		<input type="password" id="pwd" />
-		<input type="button" value="Set basic auth data" onclick="authorizeBasic()" />
-		<input type="button" value="OAuth" onclick="authorizeOAuth()" />
+		<fieldset>
+			<legend>Authentication</legend>
+			<div>
+				<input type="radio" name="authType" />
+				<input class="auth basic" type="text" id="user" />
+				<input class="auth basic" type="password" id="pwd" />
+				<input class="auth basic" type="button" value="Set basic auth data" onclick="authorizeBasic()" />
+			</div>
+			<div>
+				<input type="radio" name="authType" />
+				<input class="auth oauth" type="button" value="OAuth" onclick="authorizeOAuth()" />
+			</div>
+		</fieldset>
 		<input type="button" class="action no-auth" value="Get root tree" onclick="getTree()" />
 		<input type="button" class="action no-auth" value="Get tree at path 'test'" onclick="getTree('test')" />
 		<input type="button" class="action no-auth" value="Get blob 'test/count'" onclick="getBlob()" />
