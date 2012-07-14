@@ -2,9 +2,7 @@
 
   var api = "https://api.github.com";
 
-  var access_token;
-
-  var encodedCredentials;
+  var auth;
 
   var methods = {
 	init: function( options ) {
@@ -15,11 +13,11 @@
 	 *
 	 * @credentials
 	 */
-	encodedCredentials: function( credentials ) {
-		if ( credentials ) {
-			encodedCredentials = credentials;
+	authentication: function( authOptions ) {
+		if ( authOptions ) {
+			auth = authOptions;
 		}
-		return encodedCredentials;
+		return auth;
 	},
 
 	oauth: function( options ) {
