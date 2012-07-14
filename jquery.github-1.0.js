@@ -22,8 +22,6 @@
 
 	oauth: function( options ) {
 		var dr = $.Deferred();
-		var drd = function() { dr.resolve(); };
-		var drf = function() { dr.reject(); };
 
 		var oauthURL = "https://github.com/login/oauth/authorize?" +
 			"client_id=" + options.client_id +
@@ -34,11 +32,14 @@
 			if ( message.origin == 'github_oauth' ) {
 				auth.code = message.data;
 				auth.state = message.state;
+				dr.notifyWith( auth );
 
-				get( options.github_oauth_tunnel, auth, function ( token ) {
-					auth.access_token = access_token;
-					drd();
-				});
+				get( options.github_oauth_tunnel, auth)
+					.done( function ( token ) {
+						auth.access_token = access_token;
+						dr.resolveWith( auth );
+					})
+					.fail( function() { dr.reject(); } );
 			}
 		});
 
