@@ -31,7 +31,7 @@
 		if (auth.type == 'basic' ) {
 			auth.encodedCredentials = window.btoa( $( '#user' ).val() + ':' + $( '#pwd' ).val() );
 		} else if (auth.type == 'oauth' ) {
-			auth.client_id = GITHUB_CLIENT_ID;
+			authorizeOAuth();
 		}
 		$().github( 'authorization', auth );
 	}
