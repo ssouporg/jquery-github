@@ -10,6 +10,10 @@
 
 	var GITHUB_CLIENT_ID = '8fd6c4f32a7af4fd44c7';
 
+	function onerror( message ) {
+		alert(message);
+	}
+
 	$( document ).ready(function() {
 		$( '.auth.basic' ).on( 'focus click', function() {
 			$( 'input:radio[name=authType]' ).filter( '[value=basic]' ).attr( 'checked', true );
@@ -41,11 +45,12 @@
 			github_oauth_tunnel: 'http://github-oauth-token.appspot.com/',
 			client_id: GITHUB_CLIENT_ID,
 			scope: 'repo'
-		} ).done( function( auth ) {
+		} ).progress( function( auth ) {
 			$( '#code' ).val( auth.code );
 			$( '#state' ).val( auth.state );
+		}).done( function( auth ) {
 			$( '#access_token' ).val( auth.access_token );
-		});
+		}).fail( onerror );
 	}
 
 	function getTree( path ) {
@@ -65,7 +70,7 @@
 					$( '#results' ).append( $( '<li>' ).html( '[' + el.path + ']' ) );
 				}
 			}
-		});
+		}).fail( onerror );
 	}
 
 	function getBlob() {
@@ -78,7 +83,7 @@
     		}).done( function( blob ) {
     			var content = window.atob( blob.content.trim() );
 			$( '#results' ).empty().append( $( '<li>' ).html( content ) );
-    		});
+    		}).fail( onerror );
 	}
 
 	function increaseCount() {
@@ -104,8 +109,8 @@
 	    			message: 'increasing count'
 	    		}).done( function() {
 		    		getBlob();
-	    		});
-    		});
+	    		}).fail( onerror );
+    		}).fail( onerror );
 	}
 	//alert($.cookie('ghtoken'));
 	</script>
