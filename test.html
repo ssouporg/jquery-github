@@ -43,15 +43,6 @@
 		});
 	}
 
-	window.addEventListener( 'message', function (event) {
-		var code = event.data;
-		$( '#code' ).val(code);
-
-		$.get('token.php?code=' + code, function (access_token) {
-			$('#access_token').val(access_token);
-		});
-	});
-
 	function getTree( path ) {
 		$( '#results' ).empty();
             	$().github( 'tree', {
