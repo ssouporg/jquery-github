@@ -25,14 +25,16 @@
 		}*/
 	});
 
-	function authorize() {
-		/*var authURL = $().github( 'authorizeURL', {
+	function authorizeBasic() {
+		$().github( 'encodedCredentials', window.btoa( $( '#user' ).val() + ':' + $( '#pwd' ).val() ) );
+	}
+
+	function authorizeOAuth() {
+		var authURL = $().github( 'authorizeURL', {
 			client_id: '8fd6c4f32a7af4fd44c7',
 			scope: 'repo'
 		});
-		window.location.href = authURL;*/
-
-		$().github( 'encodedCredentials', window.btoa( $( '#user' ).val() + ':' + $( '#pwd' ).val() ) );
+		window.location.href = authURL;
 	}
 
 	function getTree( path ) {
@@ -102,7 +104,8 @@
 		<h1>JQuery GitHub Library Test</h1>
 		<input type="text" id="user" />
 		<input type="password" id="pwd" />
-		<input type="button" value="Set auth data" onclick="authorize()" />
+		<input type="button" value="Set basic auth data" onclick="authorizeBasic()" />
+		<input type="button" value="OAuth" onclick="authorizeOAuth()" />
 		<input type="button" class="action no-auth" value="Get root tree" onclick="getTree()" />
 		<input type="button" class="action no-auth" value="Get tree at path 'test'" onclick="getTree('test')" />
 		<input type="button" class="action no-auth" value="Get blob 'test/count'" onclick="getBlob()" />
