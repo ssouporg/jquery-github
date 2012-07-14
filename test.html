@@ -15,24 +15,23 @@
 		$('.auth.oauth').on( 'focus click', function() {
 			$( 'input:radio[name=authType]' ).filter( '[value=oauth]' ).attr( 'checked', true );
 		} );
-		/*if ( $().github( 'authorized' ) ) {
-			if ( $().github( 'accessToken' ) ) {
-				$( 'action auth' ).removeAttr( 'disabled' );
-			} else {
-				var accessTokenURL = $().github( 'accessTokenURL', {
-					client_id: '8fd6c4f32a7af4fd44c7',
-					client_secret: 'b52bbc3e2fdf407d444c0d6a302debb85b240641'
-				} );
-				window.location.href = accessTokenURL;
-			}
-		}
-		else {
-			$( 'action auth' ).attr( 'disabled', 'disabled' );
-		}*/
+
+		$('.auth').on( 'change' ), setAuth);
+
+		$( 'input:radio[name=authType]' ).on('change', function() {
+			setAuth();
+		} );
 	});
 
-	function authorizeBasic() {
-		$().github( 'encodedCredentials', window.btoa( $( '#user' ).val() + ':' + $( '#pwd' ).val() ) );
+	function setAuth() {
+		var auth = {};
+		auth.type = $( 'input:radio[name=authType]:checked' ).val();
+		if (auth.type == 'basic' ) {
+			auth.encodedCredentials = window.btoa( $( '#user' ).val() + ':' + $( '#pwd' ).val() );
+		} else if (auth.type == 'oauth' ) {
+			auth.client_id = '8fd6c4f32a7af4fd44c7';
+		}
+		$().github( 'authorization', auth );
 	}
 
 	function authorizeOAuth() {
