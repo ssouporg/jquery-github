@@ -22,7 +22,7 @@
 			$( 'input:radio[name=authType]' ).filter( '[value=oauth]' ).attr( 'checked', true );
 		} );
 
-		$( '.auth' ).on( 'change', setAuth  );
+		$( '.auth' ).on( 'change', setAuth );
 
 		$( 'input:radio[name=authType]' ).on('change', function() {
 			setAuth();
