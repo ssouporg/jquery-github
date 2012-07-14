@@ -37,7 +37,7 @@
 		} else if (auth.type == 'oauth' ) {
 			authorizeOAuth();
 		}
-		$().github( 'authorization', auth );
+		$().github( 'auth', auth );
 	}
 
 	function authorizeOAuth() {
