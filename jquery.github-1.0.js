@@ -23,12 +23,27 @@
 	},
 
 	oauth: function( options ) {
+		var dr = $.Deferred();
+		var drd = function() { dr.resolve(); };
+		var drf = function() { dr.reject(); };
+
 		var oauthURL = "https://github.com/login/oauth/authorize?" +
 			"client_id=" + options.client_id +
 			"&scope=" + options.scope;
 
+		$( window ).on( 'message', function(event) {
+			auth.code = event.originalEvent.data;
+
+			get( options.github_oauth_tunnel, auth, function ( token ) {
+				auth.access_token = access_token;
+				drd();
+			});
+		});
+
 		// open a new window for authentication
 		window.open(authURL);
+
+		dr.promise();
 	},
 
 	authorized: function() {
