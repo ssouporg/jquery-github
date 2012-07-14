@@ -12,6 +12,10 @@ function getUrlVars()
   return vars;
 }
 
-window.opener.postMessage( getUrlVars().code, window.location );
+window.opener.postMessage( {
+    origin: "github_oauth",
+    code: getUrlVars().code,
+    state: getUtlVars().state
+  }, window.location );
 window.close();
 </script>
