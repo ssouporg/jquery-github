@@ -30,13 +30,16 @@
 			"&scope=" + options.scope;
 
 		$( window ).on( 'message', function(event) {
-			auth.code = event.originalEvent.data;
-			auth.state = event.originalEvent.state;
+			var message = event.originalEvent;
+			if ( message.origin == 'github_oauth' ) {
+				auth.code = message.data;
+				auth.state = message.state;
 
-			get( options.github_oauth_tunnel, auth, function ( token ) {
-				auth.access_token = access_token;
-				drd();
-			});
+				get( options.github_oauth_tunnel, auth, function ( token ) {
+					auth.access_token = access_token;
+					drd();
+				});
+			}
 		});
 
 		// open a new window for authentication
