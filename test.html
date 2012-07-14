@@ -9,7 +9,7 @@
 	if (!window.atob) window.atob = $.base64.decode;
 
 	$(document).ready(function() {
-		$('.auth.basic').focus( function() {
+		$('.auth.basic').on( 'focus click', function() {
 			$( 'input:radio[name=authType]' ).filter( '[value=basic]' ).attr( 'checked', true );
 		} );
 		/*if ( $().github( 'authorized' ) ) {
