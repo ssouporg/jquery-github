@@ -132,10 +132,9 @@
 			<div>
 				<input type="radio" name="authType" value="oauth">OAuth</input>
 				<input class="auth oauth" type="button" value="Login" onclick="authorizeOAuth()" />
-				<input type="hidden" id="code" />
-				<input type="hidden" id="state" />
-				<input type="hidden" id="access_token" />
-				<label>username <input type="text" id="username" readonly></input></label>
+				<label>code <input type="text" id="code" readonly></input></label>
+				<label>state <input type="text" id="state" readonly></input></label>
+				<label>access_token <input type="text" id="access_token" readonly></input></label>
 			</div>
 		</fieldset>
 		<br />
