@@ -40,10 +40,14 @@
 				auth.state = message.state;
 				drp( auth );
 
-				jQuery.ajax({
+				jQuery.ajax( {
 					url: options.github_oauth_tunnel,
 					type: 'GET',
-					data: auth,
+					data: {
+						client_id: options.client_id,
+						code: message.code,
+						state: message.state
+					},
 					dataType: "json",
 					cache: false
 				} ).done( function ( token ) {
