@@ -403,25 +403,35 @@
     return vars;
   }
 
-  function get( url ) {
-	return jQuery.ajax({
-		url: url,
-		type: 'GET',
-		dataType: "json",
-		headers: { "Authorization": "Basic " + encodedCredentials },
-		cache: false
-	});
+  function get( url, data ) {
+  	ajaxCall( 'GET', url, data );
   }
 
   function post( url, data ) {
+  	return ajaxCall ( 'POST', url, data );
+  }
+
+  function ajaxCall( type, url, data ) {
+  	var headers = {};
+  	addAuthData( headers, data );
+
 	return jQuery.ajax({
 		url: url,
-		type: 'POST',
+		type: type,
 		data: JSON.stringify(data, null, 2),
 		dataType: "json",
-		headers: { "Authorization": "Basic " + encodedCredentials },
+		headers: headers,
 		cache: false
 	});
   }
 
+  function addAuthData( headers, data ) {
+  	if ( auth ) {
+  		if ( auth.type == 'basic' ) {
+  			headers.Authorization = "Basic " + auth.encodedCredentials;
+  		} else if ( auth.type == 'oauth' ) {
+  			data.access_token = auth.access_token;
+  		}
+  	}
+  }
 })( jQuery );
