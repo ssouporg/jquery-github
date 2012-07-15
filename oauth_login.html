@@ -15,7 +15,7 @@ function getUrlVars()
 window.opener.postMessage( {
     origin: "github_oauth",
     code: getUrlVars().code,
-    state: getUtlVars().state
+    state: getUrlVars().state
   }, window.location );
 
 window.close();
