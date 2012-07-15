@@ -19,78 +19,6 @@
 	COMMIT_OBJECT_NOT_FOUND: [ "ERR_COMMIT_001", "Commit object not found" ],
   };
 
-  /**
-   * Generic progress callback on deferred
-   */
-  function drp( deferred, progressObject ) {
-  	deferred.notifyWith( this, [progressObject] );
-  }
-
-  /**
-   * Generic success callback on deferred
-   */
-  function drd( deferred, doneObject ) {
-  	deferred.resolveWith( this, [doneObject] );
-  }
-
-  /**
-   * Builds a deferred callback for success cases in the given deferred
-   */
-  function drdf( deferred ) {
-  	return function( doneObject ) { deferred.resolveWith( this, [doneObject] ); };
-  }
-
-  /**
-   * Generic failure callback on deferred
-   */
-  function drf( deferred, error_key, details ) {
-  	deferred.rejectWith( this, [ {
-  		code: error_codes[error_key][0],
-  		message: error_codes[error_key][1],
-  		details: details
-  	} ] );
-  }
-
-  /**
-   * Builds a deferred callback for failure cases in the given deferred
-   */
-  function drff( deferred ) {
-  	return function( error ) { deferred.rejectWith( this, [error] ); };
-  }
-
-  /**
-   * Builds a deferred callback for ajax failure
-   */
-  function drfa( deferred ) {
-	return function( xhr, textStatus, errorThrown ) {
-		deferred.rejectWith( this, [ {
-			code: error_codes.AJAX_REQUEST_FAILED[0],
-			message: textStatus, // report specific message
-			details: {
-				xhr: xhr,
-				errorThrown: errorThrown
-			}
-		} ] );
-	};
-  }
-
-  function checkAuth( deferred ) {
-  	var authValid = false;
-  	if ( auth ) {
-  		if ( auth.type == "basic" && auth.encodedCredentials ) {
-  			authValid = true;
-  		} else if ( auth.type == "oauth" && auth.access_token ) {
-  			authValid = true;
-  		}
-  	}
-
-	if ( !authValid ) {
-		drf( deferred, "NEEDS_AUTHENTICATION" );
-	}
-
-	return authValid;
-  }
-
   var methods = {
 	init: function( options ) {
 	},
@@ -544,5 +472,78 @@
   			headers.Authorization = "token " + auth.access_token;
   		}
   	}
+  }
+
+
+  /**
+   * Generic progress callback on deferred
+   */
+  function drp( deferred, progressObject ) {
+  	deferred.notifyWith( this, [progressObject] );
+  }
+
+  /**
+   * Generic success callback on deferred
+   */
+  function drd( deferred, doneObject ) {
+  	deferred.resolveWith( this, [doneObject] );
+  }
+
+  /**
+   * Builds a deferred callback for success cases in the given deferred
+   */
+  function drdf( deferred ) {
+  	return function( doneObject ) { deferred.resolveWith( this, [doneObject] ); };
+  }
+
+  /**
+   * Generic failure callback on deferred
+   */
+  function drf( deferred, error_key, details ) {
+  	deferred.rejectWith( this, [ {
+  		code: error_codes[error_key][0],
+  		message: error_codes[error_key][1],
+  		details: details
+  	} ] );
+  }
+
+  /**
+   * Builds a deferred callback for failure cases in the given deferred
+   */
+  function drff( deferred ) {
+  	return function( error ) { deferred.rejectWith( this, [error] ); };
+  }
+
+  /**
+   * Builds a deferred callback for ajax failure
+   */
+  function drfa( deferred ) {
+	return function( xhr, textStatus, errorThrown ) {
+		deferred.rejectWith( this, [ {
+			code: error_codes.AJAX_REQUEST_FAILED[0],
+			message: textStatus, // report specific message
+			details: {
+				xhr: xhr,
+				errorThrown: errorThrown
+			}
+		} ] );
+	};
+  }
+
+  function checkAuth( deferred ) {
+  	var authValid = false;
+  	if ( auth ) {
+  		if ( auth.type == "basic" && auth.encodedCredentials ) {
+  			authValid = true;
+  		} else if ( auth.type == "oauth" && auth.access_token ) {
+  			authValid = true;
+  		}
+  	}
+
+	if ( !authValid ) {
+		drf( deferred, "NEEDS_AUTHENTICATION" );
+	}
+
+	return authValid;
   }
 })( jQuery );
