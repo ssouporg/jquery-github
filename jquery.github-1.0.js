@@ -23,6 +23,8 @@
 	oauth: function( options ) {
 		var dr = $.Deferred();
 
+		auth = { type: 'oauth' };
+
 		var oauthURL = "https://github.com/login/oauth/authorize?" +
 			"client_id=" + options.client_id +
 			"&scope=" + options.scope;
@@ -44,7 +46,7 @@
 		});
 
 		// open a new window for authentication
-		window.open(oauthURL);
+		window.open( oauthURL );
 
 		return dr.promise();
 	},
