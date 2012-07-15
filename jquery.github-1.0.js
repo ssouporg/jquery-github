@@ -36,7 +36,7 @@
 		$( window ).on( 'message', function(event) {
 			var message = event.originalEvent.data;
 			if ( message.origin == 'github_oauth' ) {
-				auth.code = message.data;
+				auth.code = message.code;
 				auth.state = message.state;
 				drp( auth );
 
