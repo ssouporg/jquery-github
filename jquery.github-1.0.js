@@ -47,8 +47,12 @@
 					dataType: "json",
 					cache: false
 				} ).done( function ( token ) {
-					token.access_token = access_token;
-					drd( auth );
+					if ( token.error ) {
+						drf( token.error );
+					} else {
+						token.access_token = access_token;
+						drd( auth );
+					}
 				} )
 				.fail( drf );
 			}
