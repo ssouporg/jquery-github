@@ -36,6 +36,11 @@
 		$( window ).on( 'message', function(event) {
 			var message = event.originalEvent.data;
 			if ( message.origin == 'github_oauth' ) {
+				if ( auth.code ) {
+					// this is to work around multiple calls to window on message
+					return;
+				}
+
 				if ( message.error ) {
 					drf( error );
 				} else {
