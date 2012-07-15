@@ -8,6 +8,9 @@
   	// Ajax errors
   	AJAX_REQUEST_FAILED: [ "ERR-AJAX-001", "An error occurred during ajax request" ],
 
+	// Authorization error
+	NEEDS_AUTHENTICATION: [ "ERR_AUTH_001", "Authentication to GitHub is needed to perform this operation" ],
+
 	// OAuth errors
   	ERROR_RETRIEVING_OAUTH_TEMPORARY_CODE: [ "ERR_OAUTH_001", "An error occurred retrieving OAuth temporary code" ],
   	ERROR_RETRIEVING_OAUTH_TOKEN: [ "ERR_OAUTH_002", "An error occurred retrieving OAuth token form GitHub servers" ],
@@ -64,6 +67,23 @@
 	};
   }
 
+  function checkAuth( deferred ) {
+  	var authValid = false;
+  	if ( auth ) {
+  		if ( auth.type == "basic" && auth.encodedCredentials ) {
+  			authValid = true;
+  		} else if ( auth.type == "oauth" && auth.access_token ) {
+  			authValid = true;
+  		}
+  	}
+
+	if ( !authValid ) {
+		drf( deferred, "NEEDS_AUTHENTICATION" );
+	}
+
+	return authValid;
+  }
+
   var methods = {
 	init: function( options ) {
 	},
@@ -98,7 +118,7 @@
 				}
 
 				if ( message.error ) {
-					drf( dr, error_codes.ERROR_RETRIEVING_OAUTH_TEMPORARY_CODE, error );
+					drf( dr, "ERROR_RETRIEVING_OAUTH_TEMPORARY_CODE", error );
 				} else {
 					auth.code = message.code;
 					auth.state = message.state;
@@ -116,7 +136,7 @@
 						cache: false
 					} ).done( function ( token ) {
 						if ( token.error ) {
-							drf( dr, error_codes.ERROR_RETRIEVING_OAUTH_TOKEN, token.error );
+							drf( dr, "ERROR_RETRIEVING_OAUTH_TOKEN", token.error );
 						} else {
 							auth.access_token = token.access_token;
 							drd( dr, auth );
@@ -156,11 +176,17 @@
 	*/
 	tree: function( options ) {
 		if ( options.new_tree ) {
-			// POST a new tree
-			return post( api + "/repos/" + options.user + "/" + options.repo + "/git/trees", {
-				base_tree: options.tree,
-				tree: options.new_tree
-			} );
+			var dr = $.Deferred();
+
+			if ( checkAuth( dr ) ) {
+				// POST a new tree
+				post( api + "/repos/" + options.user + "/" + options.repo + "/git/trees", {
+					base_tree: options.tree,
+					tree: options.new_tree
+				} ).done( drdf( dr ) ).fail( drfa( dr ) );
+			}
+
+			return dr.promise();
 		} else {
 			// GETS a tree
 			if ( options.path ) {
@@ -312,10 +338,16 @@
 	*/
 	ref: function( options ) {
 		if ( options.sha ) {
-			// POST
-			return post( api + "/repos/" + options.user + "/" + options.repo + "/git/refs/" + options.ref, {
-				sha: options.sha
-			} );
+			var dr = $.Deferred();
+
+			if ( checkAuth( dr ) ) {
+				// POST
+				post( api + "/repos/" + options.user + "/" + options.repo + "/git/refs/" + options.ref, {
+					sha: options.sha
+				} ).done( drdf( dr ) ).fail( drfa( dr ) );
+			}
+
+			return dr.promise();
 		} else {
 			// GET
 			return get( api + "/repos/" + options.user + "/" + options.repo + "/git/refs/" + options.ref );
@@ -343,24 +375,30 @@
 		if ( options.sha ) {
 			// an sha for the commit was specified
 			if ( options.tree ) {
-				// POST a commit object
-				if ( !options.new_tree ) {
-					return $( this ).github( 'commitTree', options );
-				} else {
-					// a new tree has to be created first
-					var dr = $.Deferred();
+				var dr = $.Deferred();
 
-					$( this ).github( 'tree', options )
-						.done( function( tree ) {
-							var opt = $.extend( {}, options );
-							delete opt.new_tree;
-							opt.tree = tree.sha;
-							$( this ).github( 'commit', opt ).done( drdf( dr ) ).fail( drfa( dr ) );
-						} )
-						.fail( drfa( dr ) );
-
-					return dr.promise();
+				if ( checkAuth( dr ) ) {
+					// POST a commit object
+					if ( !options.new_tree ) {
+						$( this ).github( 'commitTree', options )
+							.done( drdf( dr ) ).fail( drfa( dr ) );
+					} else {
+						// a new tree has to be created first
+						var dr = $.Deferred();
+	
+						$( this ).github( 'tree', options )
+							.done( function( tree ) {
+								var opt = $.extend( {}, options );
+								delete opt.new_tree;
+								opt.tree = tree.sha;
+								$( this ).github( 'commit', opt )
+									.done( drdf( dr ) ).fail( drfa( dr ) );
+							} )
+							.fail( drfa( dr ) );	
+					}
 				}
+
+				return dr.promise();
 			} else {
 				// GET a commit object
 				return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
@@ -378,7 +416,7 @@
 						$( this ).github( 'commit', opt ).done( drdf( dr ) ).fail( drfa( dr ) );
 					} else {
 						// commit object not found
-						drf( dr, error_codes.COMMIT_OBJECT_NOT_FOUND );
+						drf( dr, "COMMIT_OBJECT_NOT_FOUND" );
 					}
 				} )
 				.fail( drfa( dr ) );
@@ -475,8 +513,7 @@
 
   function ajaxCall( type, url, data ) {
   	var headers = {};
-  	if ( !data ) { data = {} };
-  	addAuthData( type, headers, data );
+  	addAuthData( headers );
 
 	return jQuery.ajax({
 		url: url,
@@ -488,16 +525,12 @@
 	});
   }
 
-  function addAuthData( requestType, headers, data ) {
+  function addAuthData( headers ) {
   	if ( auth ) {
   		if ( auth.type == 'basic' ) {
   			headers.Authorization = "Basic " + auth.encodedCredentials;
   		} else if ( auth.type == 'oauth' ) {
-  			/*if ( requestType == 'GET' ) {
-  				data.access_token = auth.access_token;
-  			} else if ( requestType == 'POST' ) {*/
-  				headers.Authorization = "token " + auth.access_token;
-  			//}
+  			headers.Authorization = "token " + auth.access_token;
   		}
   	}
   }
