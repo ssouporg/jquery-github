@@ -46,7 +46,7 @@
 		// open a new window for authentication
 		window.open(oauthURL);
 
-		dr.promise();
+		return dr.promise();
 	},
 
 	authorized: function() {
