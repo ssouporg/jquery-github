@@ -23,7 +23,7 @@
 	oauth: function( options ) {
 		var dr = $.Deferred();
 		var dr = $.Deferred();
-		var drp = function( authOptions ) { dr.resolveWith( this, [authOptions] ); };
+		var drp = function( authOptions ) { dr.notifyWith( this, [authOptions] ); };
 		var drd = function( authOptions ) { dr.resolveWith( this, [authOptions] ); };
 		var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
