@@ -44,7 +44,7 @@
 		});
 
 		// open a new window for authentication
-		window.open(authURL);
+		window.open(oauthURL);
 
 		dr.promise();
 	},
