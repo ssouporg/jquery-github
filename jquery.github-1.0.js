@@ -54,8 +54,8 @@
   function drfa( deferred ) {
 	return function( xhr, textStatus, errorThrown ) {
 		deferred.rejectWith( this, [ {
-			code: error_codes.AJAX_REQUEST_FAILED.code,
-			message: textStatus,
+			code: error_codes.AJAX_REQUEST_FAILED[0],
+			message: textStatus, // report specific message
 			details: {
 				xhr: xhr,
 				errorThrown: errorThrown
