@@ -40,12 +40,17 @@
 				auth.state = message.state;
 				drp( auth );
 
-				get( options.github_oauth_tunnel, auth)
-					.done( function ( token ) {
-						auth.access_token = access_token;
-						drd( auth );
-					})
-					.fail( drf );
+				jQuery.ajax({
+					url: options.github_oauth_tunnel,
+					type: 'GET',
+					data: auth,
+					dataType: "json",
+					cache: false
+				} ).done( function ( token ) {
+					token.access_token = access_token;
+					drd( auth );
+				} )
+				.fail( drf );
 			}
 		});
 
