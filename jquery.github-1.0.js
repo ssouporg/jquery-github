@@ -1,3 +1,11 @@
+/*
+ * jquery-github
+ * https://github.com/alebellu/jquery-github
+ *
+ * Copyright 2012 Alessandro Bellucci
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ */
+
 (function($) {
 
   var api = "https://api.github.com";
