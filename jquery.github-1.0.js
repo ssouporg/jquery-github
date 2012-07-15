@@ -57,7 +57,10 @@
 							state: message.state
 						},
 						dataType: "json",
-						cache: false
+						cache: false,
+						error:     function(xhr, textStatus, errorThrown){
+       							alert('request failed');
+    						}
 					} ).done( function ( token ) {
 						if ( token.error ) {
 							drf( token.error );
