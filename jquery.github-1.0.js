@@ -22,6 +22,10 @@
 
 	oauth: function( options ) {
 		var dr = $.Deferred();
+		var dr = $.Deferred();
+		var drp = function( authOptions ) { dr.resolveWith( this, [authOptions] ); };
+		var drd = function( authOptions ) { dr.resolveWith( this, [authOptions] ); };
+		var drf = function() { dr.reject(); };
 
 		auth = { type: 'oauth' };
 
@@ -34,14 +38,14 @@
 			if ( message.origin == 'github_oauth' ) {
 				auth.code = message.data;
 				auth.state = message.state;
-				dr.notifyWith( auth );
+				drp( auth );
 
 				get( options.github_oauth_tunnel, auth)
 					.done( function ( token ) {
 						auth.access_token = access_token;
-						dr.resolveWith( auth );
+						drd( auth );
 					})
-					.fail( function() { dr.reject(); } );
+					.fail( drf );
 			}
 		});
 
