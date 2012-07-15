@@ -26,5 +26,5 @@ License
 ------------
 Dual licensed, like JQuery (http://jquery.org/license/)
 
-<a href="http://alebellu.github.com/licenses/MIT-LICENSE.txt">MIT License</a>
-<a href="http://alebellu.github.com/licenses/GPL-LICENSE.txt">GPL</a>
+- <a href="http://alebellu.github.com/licenses/MIT-LICENSE.txt">MIT License</a>
+- <a href="http://alebellu.github.com/licenses/GPL-LICENSE.txt">GPL</a>
