@@ -118,7 +118,7 @@
 						if ( token.error ) {
 							drf( dr, error_codes.ERROR_RETRIEVING_OAUTH_TOKEN, token.error );
 						} else {
-							oauth.access_token = token.access_token;
+							auth.access_token = token.access_token;
 							drd( dr, auth );
 						}
 					} ).fail( drfa );
