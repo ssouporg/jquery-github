@@ -36,29 +36,33 @@
 		$( window ).on( 'message', function(event) {
 			var message = event.originalEvent.data;
 			if ( message.origin == 'github_oauth' ) {
-				auth.code = message.code;
-				auth.state = message.state;
-				drp( auth );
+				if ( message.error ) {
+					drf( error );
+				} else {
+					auth.code = message.code;
+					auth.state = message.state;
+					drp( auth );
 
-				jQuery.ajax( {
-					url: options.github_oauth_tunnel,
-					type: 'GET',
-					data: {
-						client_id: options.client_id,
-						code: message.code,
-						state: message.state
-					},
-					dataType: "json",
-					cache: false
-				} ).done( function ( token ) {
-					if ( token.error ) {
-						drf( token.error );
-					} else {
-						token.access_token = access_token;
-						drd( auth );
-					}
-				} )
-				.fail( drf );
+					jQuery.ajax( {
+						url: options.github_oauth_tunnel,
+						type: 'GET',
+						data: {
+							client_id: options.client_id,
+							code: message.code,
+							state: message.state
+						},
+						dataType: "json",
+						cache: false
+					} ).done( function ( token ) {
+						if ( token.error ) {
+							drf( token.error );
+						} else {
+							token.access_token = access_token;
+							drd( auth );
+						}
+					} )
+					.fail( drf );
+				}
 			}
 		});
 
