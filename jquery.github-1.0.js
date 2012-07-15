@@ -4,6 +4,66 @@
 
   var auth;
 
+  var error_codes = {
+  	// Ajax errors
+  	AJAX_REQUEST_FAILED: [ "ERR-AJAX-001", "An error occurred during ajax request" ],
+
+	// OAuth errors
+  	ERROR_RETRIEVING_OAUTH_TEMPORARY_CODE = [ "ERR_OAUTH_001", "An error occurred retrieving OAuth temporary code" ],
+  	ERROR_RETRIEVING_OAUTH_TOKEN = [ "ERR_OAUTH_002", "An error occurred retrieving OAuth token form github servers" ],
+
+	// Commit errors
+	COMMIT_OBJECT_NOT_FOUND = [ "ERR_COMMIT_001", "Commit object not found" ];
+  };
+
+  /**
+   * Generic progress callback on deferred
+   */
+  function drp( deferred, progressObject ) {
+  	deferred.notifyWith( this, [progressObject] );
+  }
+
+  /**
+   * Generic success callback on deferred
+   */
+  function drd( deferred, doneObject ) {
+  	deferred.resolveWith( this, [doneObject] );
+  }
+
+  /**
+   * Builds a deferred callback for success cases in the given deferred
+   */
+  function drdf( deferred ) {
+  	return function( doneObject) { deferred.resolveWith( this, [doneObject] ); };
+  }
+
+  /**
+   * Generic failure callback on deferred
+   */
+  function drf( deferred, error_key, details ) {
+  	deferred.rejectWith( this, [ {
+  		code: error_codes[error_key][0],
+  		message: error_codes[error_key][1],
+  		details: details
+  	} ] );
+  }
+
+  /**
+   * Builds a deferred callback for ajax failure
+   */
+  function drfa( deferred ) {
+	return function( xhr, textStatus, errorThrown ) {
+		deferred.rejectWith( this, [ {
+			code: error_codes.AJAX_REQUEST_FAILED.code,
+			message: textStatus,
+			details: {
+				xhr: xhr,
+				errorThrown: errorThrown
+			}
+		} ] );
+	};
+  }
+
   var methods = {
 	init: function( options ) {
 	},
@@ -22,10 +82,6 @@
 
 	oauth: function( options ) {
 		var dr = $.Deferred();
-		var dr = $.Deferred();
-		var drp = function( authOptions ) { dr.notifyWith( this, [authOptions] ); };
-		var drd = function( authOptions ) { dr.resolveWith( this, [authOptions] ); };
-		var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 		auth = { type: 'oauth' };
 
@@ -42,11 +98,11 @@
 				}
 
 				if ( message.error ) {
-					drf( error );
+					drf( dr, error_codes.ERROR_RETRIEVING_OAUTH_TEMPORARY_CODE, error );
 				} else {
 					auth.code = message.code;
 					auth.state = message.state;
-					drp( auth );
+					drp( dr, auth );
 
 					jQuery.ajax( {
 						url: options.github_oauth_tunnel,
@@ -57,18 +113,15 @@
 							state: message.state
 						},
 						dataType: "json",
-						cache: false,
-						error:     function(xhr, textStatus, errorThrown){
-       							alert('request failed');
-    						}
+						cache: false
 					} ).done( function ( token ) {
 						if ( token.error ) {
-							drf( token.error );
+							drf( dr, error_codes.ERROR_RETRIEVING_OAUTH_TOKEN, token.error );
 						} else {
 							token.access_token = access_token;
-							drd( auth );
+							drd( dr, auth );
 						}
-					} ).fail( drf );
+					} ).fail( drfa );
 				}
 			}
 		});
@@ -130,8 +183,6 @@
 	*/
 	treeAtPath: function( options ) {
 		var dr = $.Deferred();
-		var drd = function( tree ) { dr.resolveWith( this, [tree] ); };
-		var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 		var path = cleanPath(options.path);
 
@@ -166,16 +217,16 @@
 							repo: options.repo,
 							tree: firstLevelSHA,
 							path: path
-						} ).done( drd ).fail( drf );
+						} ).done( drdf( dr ) ).fail( drfa( dr ) );
 					} else {
-						drf();
+						drf( dr );
 					}
 				} else {
 					// got it
 					dr.resolveWith( this, [tree] );
 				}
 			} )
-			.fail( drf );
+			.fail( drfa( dr ) );
 
 		return dr.promise();
 	},
@@ -212,8 +263,6 @@
 	*/
 	blobAtPath: function( options ) {
 		var dr = $.Deferred();
-		var drd = function( blob ) { dr.resolveWith( this, [blob] ); };
-		var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 		var path = cleanPath(options.path);
 		// extract last blob name from path
@@ -244,9 +293,9 @@
 				delete opt.tree;
 				delete opt.path;
 				opt.sha = sha;
-				$( this ).github( 'blob', opt ).done( drd ).fail( drf );
+				$( this ).github( 'blob', opt ).done( drdf( dr ) ).fail( drfa( dr ) );
 			} )
-			.fail( drf );
+			.fail( drfa( dr ) );
 
 		return dr.promise();
 	},
@@ -300,17 +349,15 @@
 				} else {
 					// a new tree has to be created first
 					var dr = $.Deferred();
-					var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
-					var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 					$( this ).github( 'tree', options )
 						.done( function( tree ) {
 							var opt = $.extend( {}, options );
 							delete opt.new_tree;
 							opt.tree = tree.sha;
-							$( this ).github( 'commit', opt ).done( drd ).fail( drf );
+							$( this ).github( 'commit', opt ).done( drdf( dr ) ).fail( drfa( dr ) );
 						} )
-						.fail( drf );
+						.fail( drfa( dr ) );
 
 					return dr.promise();
 				}
@@ -321,8 +368,6 @@
 		} else if ( options.commit_ref  ) {
 			// resolve commit sha first
 			var dr = $.Deferred();
-			var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
-			var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 			var opt = $.extend( { ref: options.commit_ref }, options );
 			delete opt.commit_ref;
@@ -330,13 +375,13 @@
 				.done( function( ref ) {
 					if ( ref.object && ref.object.type == 'commit' ) {
 						opt.sha = ref.object.sha;
-						$( this ).github( 'commit', opt ).done( drd ).fail( drf );
+						$( this ).github( 'commit', opt ).done( drdf( dr ) ).fail( drfa( dr ) );
 					} else {
 						// commit object not found
-						drf();
+						drf( dr, error_codes.COMMIT_OBJECT_NOT_FOUND );
 					}
 				} )
-				.fail( drf );
+				.fail( drfa( dr ) );
 
 			return dr.promise();
 		} else {
@@ -360,8 +405,6 @@
 	commitTree: function( options ) {
 		if ( options.tree ) {
 			var dr = $.Deferred();
-			var drd = function( ref ) { dr.resolveWith( this, [ref] ); };
-			var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 			// POST a commit object and update the reference to it
 			post( api + "/repos/" + options.user + "/" + options.repo + "/git/commits", {
@@ -374,7 +417,7 @@
 						repo: options.repo,
 						ref: options.ref,
 						sha: new_commit.sha
-					} ).done( drd ).fail( drf );
+					} ).done( drdf( dr ) ).fail( drfa( dr ) );
 				} );
 
 			return dr.promise();
