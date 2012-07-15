@@ -4,8 +4,8 @@
  *
  * Copyright 2012 Alessandro Bellucci
  * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://alebellu.github.com/jquery-github/GPL-LICENSE.txt
- * http://alebellu.github.com/jquery-github/MIT-LICENSE.txt
+ * http://alebellu.github.com/licenses/GPL-LICENSE.txt
+ * http://alebellu.github.com/licenses/MIT-LICENSE.txt
  */
 
 (function($) {
