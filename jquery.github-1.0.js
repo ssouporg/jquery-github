@@ -404,7 +404,7 @@
   }
 
   function get( url, data ) {
-  	ajaxCall( 'GET', url, data );
+  	return ajaxCall( 'GET', url, data );
   }
 
   function post( url, data ) {
