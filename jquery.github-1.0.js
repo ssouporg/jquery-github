@@ -121,7 +121,7 @@
 							auth.access_token = token.access_token;
 							drd( dr, auth );
 						}
-					} ).fail( drfa );
+					} ).fail( drfa( dr ) );
 				}
 			}
 		});
