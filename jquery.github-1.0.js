@@ -28,7 +28,7 @@
 			"&scope=" + options.scope;
 
 		$( window ).on( 'message', function(event) {
-			var message = event.originalEvent;
+			var message = event.originalEvent.data;
 			if ( message.origin == 'github_oauth' ) {
 				auth.code = message.data;
 				auth.state = message.state;
