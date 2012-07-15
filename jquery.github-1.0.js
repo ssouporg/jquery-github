@@ -476,28 +476,28 @@
 
 
   /**
-   * Generic progress callback on deferred
+   * Generic progress to be forwarded to the given deferred
    */
   function drp( deferred, progressObject ) {
   	deferred.notifyWith( this, [progressObject] );
   }
 
   /**
-   * Generic success callback on deferred
+   * Generic success to be forwarded to the given deferred
    */
   function drd( deferred, doneObject ) {
   	deferred.resolveWith( this, [doneObject] );
   }
 
   /**
-   * Builds a deferred callback for success cases in the given deferred
+   * Builds a deferred callback for success cases on the given deferred
    */
   function drdf( deferred ) {
   	return function( doneObject ) { deferred.resolveWith( this, [doneObject] ); };
   }
 
   /**
-   * Generic failure callback on deferred
+   * Generic failure to be forwarded to the given deferred
    */
   function drf( deferred, error_key, details ) {
   	deferred.rejectWith( this, [ {
@@ -508,14 +508,14 @@
   }
 
   /**
-   * Builds a deferred callback for failure cases in the given deferred
+   * Builds a deferred callback for failure cases on the given deferred
    */
   function drff( deferred ) {
   	return function( error ) { deferred.rejectWith( this, [error] ); };
   }
 
   /**
-   * Builds a deferred callback for ajax failure
+   * Builds a deferred callback for ajax failures
    */
   function drfa( deferred ) {
 	return function( xhr, textStatus, errorThrown ) {
