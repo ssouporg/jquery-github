@@ -12,6 +12,7 @@
 
 	function onerror( error ) {
 		alert( error.code + ": " + error.message );
+		alert(error.details.errorThrown.getMessage());
 	}
 
 	$( document ).ready(function() {
