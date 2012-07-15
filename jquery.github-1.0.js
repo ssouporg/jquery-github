@@ -65,8 +65,7 @@
 							token.access_token = access_token;
 							drd( auth );
 						}
-					} )
-					.fail( drf );
+					} ).fail( drf );
 				}
 			}
 		});
