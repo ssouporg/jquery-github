@@ -34,10 +34,11 @@
 		auth.type = $( 'input:radio[name=authType]:checked' ).val();
 		if (auth.type == 'basic' ) {
 			auth.encodedCredentials = window.btoa( $( '#user' ).val() + ':' + $( '#pwd' ).val() );
+			$().github( 'auth', auth );
 		} else if (auth.type == 'oauth' ) {
+			$().github( 'auth', auth );
 			authorizeOAuth();
 		}
-		$().github( 'auth', auth );
 	}
 
 	function authorizeOAuth() {
