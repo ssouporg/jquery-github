@@ -15,6 +15,6 @@ Example
 The proxy to the GitHub access token service for OAuth is implemented as a Java App Engine application.
 See the project <a href="https://github.com/alebellu/github-oauth-token">github-oauth-token</a> for details.
 
-Test page make use of the following third-party libraries:
+Test page makes use of the following third-party libraries:
 
 http://github.com/carlo/jquery-base64 for base64 encoding and decoding.
