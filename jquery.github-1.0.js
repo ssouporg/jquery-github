@@ -413,6 +413,7 @@
 
   function ajaxCall( type, url, data ) {
   	var headers = {};
+  	if ( !data ) { data = {} };
   	addAuthData( headers, data );
 
 	return jQuery.ajax({
