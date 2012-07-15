@@ -37,7 +37,7 @@
    * Builds a deferred callback for success cases in the given deferred
    */
   function drdf( deferred ) {
-  	return function( doneObject) { deferred.resolveWith( this, [doneObject] ); };
+  	return function( doneObject ) { deferred.resolveWith( this, [doneObject] ); };
   }
 
   /**
@@ -49,6 +49,13 @@
   		message: error_codes[error_key][1],
   		details: details
   	} ] );
+  }
+
+  /**
+   * Builds a deferred callback for failure cases in the given deferred
+   */
+  function drff( deferred ) {
+  	return function( error ) { deferred.rejectWith( this, [error] ); };
   }
 
   /**
@@ -183,7 +190,7 @@
 				post( api + "/repos/" + options.user + "/" + options.repo + "/git/trees", {
 					base_tree: options.tree,
 					tree: options.new_tree
-				} ).done( drdf( dr ) ).fail( drfa( dr ) );
+				} ).done( drdf( dr ) ).fail( drff( dr ) );
 			}
 
 			return dr.promise();
@@ -243,7 +250,7 @@
 							repo: options.repo,
 							tree: firstLevelSHA,
 							path: path
-						} ).done( drdf( dr ) ).fail( drfa( dr ) );
+						} ).done( drdf( dr ) ).fail( drff( dr ) );
 					} else {
 						drf( dr );
 					}
@@ -252,7 +259,7 @@
 					dr.resolveWith( this, [tree] );
 				}
 			} )
-			.fail( drfa( dr ) );
+			.fail( drff( dr ) );
 
 		return dr.promise();
 	},
@@ -319,9 +326,9 @@
 				delete opt.tree;
 				delete opt.path;
 				opt.sha = sha;
-				$( this ).github( 'blob', opt ).done( drdf( dr ) ).fail( drfa( dr ) );
+				$( this ).github( 'blob', opt ).done( drdf( dr ) ).fail( drff( dr ) );
 			} )
-			.fail( drfa( dr ) );
+			.fail( drff( dr ) );
 
 		return dr.promise();
 	},
@@ -344,7 +351,7 @@
 				// POST
 				post( api + "/repos/" + options.user + "/" + options.repo + "/git/refs/" + options.ref, {
 					sha: options.sha
-				} ).done( drdf( dr ) ).fail( drfa( dr ) );
+				} ).done( drdf( dr ) ).fail( drff( dr ) );
 			}
 
 			return dr.promise();
@@ -381,7 +388,7 @@
 					// POST a commit object
 					if ( !options.new_tree ) {
 						$( this ).github( 'commitTree', options )
-							.done( drdf( dr ) ).fail( drfa( dr ) );
+							.done( drdf( dr ) ).fail( drff( dr ) );
 					} else {
 						// a new tree has to be created first
 						var dr = $.Deferred();
@@ -392,9 +399,9 @@
 								delete opt.new_tree;
 								opt.tree = tree.sha;
 								$( this ).github( 'commit', opt )
-									.done( drdf( dr ) ).fail( drfa( dr ) );
+									.done( drdf( dr ) ).fail( drff( dr ) );
 							} )
-							.fail( drfa( dr ) );	
+							.fail( drff( dr ) );	
 					}
 				}
 
@@ -413,13 +420,13 @@
 				.done( function( ref ) {
 					if ( ref.object && ref.object.type == 'commit' ) {
 						opt.sha = ref.object.sha;
-						$( this ).github( 'commit', opt ).done( drdf( dr ) ).fail( drfa( dr ) );
+						$( this ).github( 'commit', opt ).done( drdf( dr ) ).fail( drff( dr ) );
 					} else {
 						// commit object not found
 						drf( dr, "COMMIT_OBJECT_NOT_FOUND" );
 					}
 				} )
-				.fail( drfa( dr ) );
+				.fail( drff( dr ) );
 
 			return dr.promise();
 		} else {
@@ -455,7 +462,7 @@
 						repo: options.repo,
 						ref: options.ref,
 						sha: new_commit.sha
-					} ).done( drdf( dr ) ).fail( drfa( dr ) );
+					} ).done( drdf( dr ) ).fail( drff( dr ) );
 				} );
 
 			return dr.promise();
@@ -512,17 +519,21 @@
   }
 
   function ajaxCall( type, url, data ) {
+  	var dr = $.Deferred();
+
   	var headers = {};
   	addAuthData( headers );
 
-	return jQuery.ajax({
+	jQuery.ajax({
 		url: url,
 		type: type,
 		data: data,
 		dataType: "json",
 		headers: headers,
 		cache: false
-	});
+	}).done( drdf( dr ) ).fail( drfa( dr ) );
+
+	return dr.promise();
   }
 
   function addAuthData( headers ) {
