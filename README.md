@@ -3,5 +3,18 @@ jquery-github
 
 JQuery plugin for interacting with GitHub api v3
 
-Code under branch gh-pages
+See <a href="https://github.com/alebellu/jquery-github/tree/gh-pages">gh-pages</a> branch for code.
 
+OAuth flow implementation comes from Christopher Chedeau's work:
+http://blog.vjeux.com/2012/javascript/github-oauth-login-browser-side.html
+
+Example
+------------
+<a href="http://alebellu.github.com/jquery-github/test/test.html">Here</a> there is a test page to experiment with the plugin.
+
+The proxy to the GitHub access token service for OAuth is implemented as a Java App Engine application.
+See the project <a href="https://github.com/alebellu/github-oauth-token">github-oauth-token</a> for details.
+
+Test page make use of the following third-party libraries:
+
+http://github.com/carlo/jquery-base64 for base64 encoding and decoding.
