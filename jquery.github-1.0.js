@@ -470,30 +470,34 @@
   }
 
   function post( url, data ) {
-  	return ajaxCall ( 'POST', url, data );
+  	return ajaxCall ( 'POST', url, JSON.stringify(data, null, 2) );
   }
 
   function ajaxCall( type, url, data ) {
   	var headers = {};
   	if ( !data ) { data = {} };
-  	addAuthData( headers, data );
+  	addAuthData( type, headers, data );
 
 	return jQuery.ajax({
 		url: url,
 		type: type,
-		data: JSON.stringify(data, null, 2),
+		data: data,
 		dataType: "json",
 		headers: headers,
 		cache: false
 	});
   }
 
-  function addAuthData( headers, data ) {
+  function addAuthData( requestType, headers, data ) {
   	if ( auth ) {
   		if ( auth.type == 'basic' ) {
   			headers.Authorization = "Basic " + auth.encodedCredentials;
   		} else if ( auth.type == 'oauth' ) {
-  			data.access_token = auth.access_token;
+  			/*if ( requestType == 'GET' ) {
+  				data.access_token = auth.access_token;
+  			} else if ( requestType == 'POST' ) {*/
+  				headers.Authorization = "token " + auth.access_token;
+  			//}
   		}
   	}
   }
