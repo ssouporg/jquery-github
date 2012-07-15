@@ -25,7 +25,7 @@
 		var dr = $.Deferred();
 		var drp = function( authOptions ) { dr.resolveWith( this, [authOptions] ); };
 		var drd = function( authOptions ) { dr.resolveWith( this, [authOptions] ); };
-		var drf = function() { dr.reject(); };
+		var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 		auth = { type: 'oauth' };
 
@@ -116,7 +116,7 @@
 	treeAtPath: function( options ) {
 		var dr = $.Deferred();
 		var drd = function( tree ) { dr.resolveWith( this, [tree] ); };
-		var drf = function() { dr.reject(); };
+		var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 		var path = cleanPath(options.path);
 
@@ -198,7 +198,7 @@
 	blobAtPath: function( options ) {
 		var dr = $.Deferred();
 		var drd = function( blob ) { dr.resolveWith( this, [blob] ); };
-		var drf = function() { dr.reject(); };
+		var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 		var path = cleanPath(options.path);
 		// extract last blob name from path
@@ -286,7 +286,7 @@
 					// a new tree has to be created first
 					var dr = $.Deferred();
 					var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
-					var drf = function() { dr.reject(); };
+					var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 					$( this ).github( 'tree', options )
 						.done( function( tree ) {
@@ -307,7 +307,7 @@
 			// resolve commit sha first
 			var dr = $.Deferred();
 			var drd = function( commit ) { dr.resolveWith( this, [commit] ); };
-			var drf = function() { dr.reject(); };
+			var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 			var opt = $.extend( { ref: options.commit_ref }, options );
 			delete opt.commit_ref;
@@ -346,7 +346,7 @@
 		if ( options.tree ) {
 			var dr = $.Deferred();
 			var drd = function( ref ) { dr.resolveWith( this, [ref] ); };
-			var drf = function() { dr.reject(); };
+			var drf = function( error ) { dr.rejectWith( this, [error] ); };
 
 			// POST a commit object and update the reference to it
 			post( api + "/repos/" + options.user + "/" + options.repo + "/git/commits", {
