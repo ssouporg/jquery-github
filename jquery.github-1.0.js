@@ -9,11 +9,11 @@
   	AJAX_REQUEST_FAILED: [ "ERR-AJAX-001", "An error occurred during ajax request" ],
 
 	// OAuth errors
-  	ERROR_RETRIEVING_OAUTH_TEMPORARY_CODE = [ "ERR_OAUTH_001", "An error occurred retrieving OAuth temporary code" ],
-  	ERROR_RETRIEVING_OAUTH_TOKEN = [ "ERR_OAUTH_002", "An error occurred retrieving OAuth token form github servers" ],
+  	ERROR_RETRIEVING_OAUTH_TEMPORARY_CODE: [ "ERR_OAUTH_001", "An error occurred retrieving OAuth temporary code" ],
+  	ERROR_RETRIEVING_OAUTH_TOKEN: [ "ERR_OAUTH_002", "An error occurred retrieving OAuth token form github servers" ],
 
 	// Commit errors
-	COMMIT_OBJECT_NOT_FOUND = [ "ERR_COMMIT_001", "Commit object not found" ];
+	COMMIT_OBJECT_NOT_FOUND: [ "ERR_COMMIT_001", "Commit object not found" ],
   };
 
   /**
