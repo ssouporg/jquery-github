@@ -54,7 +54,7 @@
 			"client_id=" + options.client_id +
 			"&scope=" + options.scope;
 
-		$( window ).on( 'message', function(event) {
+		$( window ).on( 'message', function( event ) {
 			var message = event.originalEvent.data;
 			if ( message.origin == 'github_oauth' ) {
 				if ( auth.code ) {
@@ -63,7 +63,7 @@
 				}
 
 				if ( message.error ) {
-					drf( dr, "ERROR_RETRIEVING_OAUTH_TEMPORARY_CODE", error );
+					drf( dr, "ERROR_RETRIEVING_OAUTH_TEMPORARY_CODE", message.error );
 				} else {
 					auth.code = message.code;
 					auth.state = message.state;
