@@ -5,8 +5,7 @@ JQuery plugin for interacting with GitHub api v3
 
 See <a href="https://github.com/alebellu/jquery-github/tree/gh-pages">gh-pages</a> branch for code.
 
-OAuth flow implementation comes from Christopher Chedeau's work:
-http://blog.vjeux.com/2012/javascript/github-oauth-login-browser-side.html
+OAuth flow implementation comes from <a href="http://blog.vjeux.com/2012/javascript/github-oauth-login-browser-side.html">Christopher Chedeau's work</a>.
 
 Example
 ------------
