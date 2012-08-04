@@ -176,7 +176,7 @@
 					// ...look for the sha of first level directory in the path..
 					var firstLevelSHA;
 					for ( var i = 0; i < tree.tree.length; i ++) {
-						if (tree.tree[i].type == 'tree' && tree.tree[i].path == firstLevel) {
+						if (/*tree.tree[i].type == 'tree' &&*/ tree.tree[i].path == firstLevel) {
 							firstLevelSHA = tree.tree[i].sha;
 						}
 					}
