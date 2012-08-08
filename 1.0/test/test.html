@@ -9,7 +9,9 @@
 
 	var GITHUB_CLIENT_ID = '8fd6c4f32a7af4fd44c7';
 
-    var gh = new github();
+    var gh = new github( {
+    	useTreeCache: true
+    } );
 
 	function onerror( error ) {
 		alert( error.code + ": " + error.message );
