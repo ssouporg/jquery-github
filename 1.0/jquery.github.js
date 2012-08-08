@@ -153,7 +153,7 @@ github = function( options ) {
                         	gh.treeCache[ options.tree ] = t;
                     	}
                     	dr.resolve( t );
-                	} );
+                	} ).fail( drff( dr ) );
                 }
 			}
 		}
