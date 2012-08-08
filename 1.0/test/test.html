@@ -13,7 +13,9 @@
 
 	function onerror( error ) {
 		alert( error.code + ": " + error.message );
-		alert(error.details.errorThrown.getMessage());
+      	if ( error.details && error.details.errorThrown ) {
+			alert( error.details.errorThrown.getMessage() );
+      	}
 	}
 
 	$( document ).ready(function() {
