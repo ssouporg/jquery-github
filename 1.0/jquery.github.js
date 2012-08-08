@@ -263,7 +263,7 @@ github = function( options ) {
     	var gh = this;
 
 		var path = cleanPath(options.path);
-		// extract last blob name from path
+		// extract blob name from path
 		var indexOfSlash = path.lastIndexOf( '/' );
 		var blobName;
 		if ( indexOfSlash > 0 ) {
