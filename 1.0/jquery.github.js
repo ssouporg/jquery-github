@@ -33,6 +33,9 @@ github = function( options ) {
 
 	// Commit errors
 	COMMIT_OBJECT_NOT_FOUND: [ "ERR_COMMIT_001", "Commit object not found" ],
+
+    // Tree errors
+	PATH_NOT_FOUND: [ "ERR_TREE_001", "Path not found" ],
   };
 
 	/**
@@ -196,7 +199,7 @@ github = function( options ) {
 							path: path
 						} ).done( drdf( dr ) ).fail( drff( dr ) );
 					} else {
-						drf( dr );
+						drf( dr, "PATH_NOT_FOUND" );
 					}
 				} else {
 					// got it
