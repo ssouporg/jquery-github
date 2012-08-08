@@ -12,6 +12,10 @@ github = function( options ) {
     var gh = this;
 
     gh.initOptions = options;
+
+	if ( gh.initOptions.useTreeCache == true ) {
+      gh.treeCache = {};
+	}
 };
 
 (function($) {
@@ -126,11 +130,10 @@ github = function( options ) {
 	* @returns a deferred for the call; callback will yield a tree object
 	*/
 	github.prototype.tree = function( options ) {
-    	var gh = this;
+		var dr = $.Deferred();
+      	var gh = this;
 
 		if ( options.new_tree ) {
-			var dr = $.Deferred();
-
 			if ( checkAuth( dr ) ) {
 				// POST a new tree
 				post( api + "/repos/" + options.user + "/" + options.repo + "/git/trees", {
@@ -138,16 +141,24 @@ github = function( options ) {
 					tree: options.new_tree
 				} ).done( drdf( dr ) ).fail( drff( dr ) );
 			}
-
-			return dr.promise();
 		} else {
 			// GETS a tree
 			if ( options.path ) {
 				return gh.treeAtPath( options );
 			} else {
-				return get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
+            	if ( options.cache == true && gh.treeCache[ options.tree ] ) {
+                } else {
+                	get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree ).done( function( t ) {
+                    	if ( options.cache == true ) {
+                        	gh.treeCache[ options.tree ] = t;
+                    	}
+                    	dr.resolve( t );
+                	} );
+                }
 			}
 		}
+
+		return dr.promise();
 	};
 
 	/**
