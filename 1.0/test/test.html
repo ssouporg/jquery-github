@@ -9,6 +9,8 @@
 
 	var GITHUB_CLIENT_ID = '8fd6c4f32a7af4fd44c7';
 
+    var gh = new github();
+
 	function onerror( error ) {
 		alert( error.code + ": " + error.message );
 		alert(error.details.errorThrown.getMessage());
@@ -45,7 +47,7 @@
 	}
 
 	function authorizeOAuth() {
-		$().github( 'oauth', {
+		gh.oauth( {
 			github_oauth_tunnel: 'http://github-oauth-token.appspot.com/',
 			client_id: GITHUB_CLIENT_ID,
 			scope: 'repo'
@@ -59,12 +61,12 @@
 
 	function getTree( path ) {
 		$( '#results' ).empty();
-            	$().github( 'tree', {
+            	gh.tree( {
             		user: 'alebellu',
             		repo: 'jquery-github',
             		tree: 'gh-pages',
             		path: path
-            	}).done( function(tree) {
+            	} ).done( function(tree) {
             		$( '#results' ).empty();
 			for (var i = 0; i < tree.tree.length ; i ++) {
 				var el = tree.tree[i];
@@ -79,29 +81,29 @@
 
 	function getBlob() {
 		$( '#results' ).empty();
-    		$().github( 'blob', {
+    		gh.blob( {
     			user: 'alebellu',
     			repo: 'jquery-github',
     			tree: 'gh-pages',
     			path: 'test/count'
-    		}).done( function( blob ) {
+    		} ).done( function( blob ) {
     			var content = window.atob( blob.content.trim() );
-			$( '#results' ).empty().append( $( '<li>' ).html( content ) );
-    		}).fail( onerror );
+				$( '#results' ).empty().append( $( '<li>' ).html( content ) );
+    		} ).fail( onerror );
 	}
 
 	function increaseCount() {
 		$( '#results' ).empty();
-    		$().github( 'blob', {
+    		gh.blob( {
     			user: 'alebellu',
     			repo: 'jquery-github',
     			tree: 'gh-pages',
     			path: 'test/count'
-    		}).done( function( blob ) {
+    		} ).done( function( blob ) {
     			var content = window.atob( blob.content.trim() );
     			content = '' + (parseInt( content ) + 1);
     			var encodedContent = window.btoa( content );
-	    		$().github( 'commit', {
+	    		gh.commit( {
 	    			user: 'alebellu',
 	    			repo: 'jquery-github',
 	    			commit_ref: 'heads/gh-pages',
@@ -111,10 +113,10 @@
 	    				content: content
 	    			}],
 	    			message: 'increasing count'
-	    		}).done( function() {
+	    		} ).done( function() {
 		    		getBlob();
-	    		}).fail( onerror );
-    		}).fail( onerror );
+	    		} ).fail( onerror );
+    		} ).fail( onerror );
 	}
 	</script>
 </head>
