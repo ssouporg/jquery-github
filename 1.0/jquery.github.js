@@ -49,6 +49,7 @@ github = function( options ) {
 
 	github.prototype.oauth = function( options ) {
 		var dr = $.Deferred();
+    	var gh = this;
 
 		auth = { type: 'oauth' };
 
@@ -122,6 +123,8 @@ github = function( options ) {
 	* @returns a deferred for the call; callback will yield a tree object
 	*/
 	github.prototype.tree = function( options ) {
+    	var gh = this;
+
 		if ( options.new_tree ) {
 			var dr = $.Deferred();
 
@@ -137,7 +140,7 @@ github = function( options ) {
 		} else {
 			// GETS a tree
 			if ( options.path ) {
-				return $( this ).github( 'treeAtPath', options );
+				return gh.treeAtPath( options );
 			} else {
 				return get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
 			}
@@ -156,6 +159,7 @@ github = function( options ) {
 	*/
 	github.prototype.treeAtPath = function( options ) {
 		var dr = $.Deferred();
+    	var gh = this;
 
 		var path = cleanPath(options.path);
 
@@ -185,7 +189,7 @@ github = function( options ) {
 
 					if ( firstLevelSHA ) {
 						// ..navigate down one level
-						$( this ).github( 'treeAtPath', {
+						gh.treeAtPath( {
 							user: options.user,
 							repo: options.repo,
 							tree: firstLevelSHA,
@@ -216,9 +220,11 @@ github = function( options ) {
 	* @returns a deferred for the call; callback will yield a blob object
 	*/
 	github.prototype.blob = function( options ) {
+    	var gh = this;
+
 		var path = cleanPath( options.path );
 		if ( path ) {
-			return $( this ).github( 'blobAtPath', options );
+			return gh.blobAtPath( options );
 		} else {
 			return get( api + "/repos/" + options.user + "/" + options.repo + "/git/blobs/" + options.sha );
 		}
@@ -236,6 +242,7 @@ github = function( options ) {
 	*/
 	github.prototype.blobAtPath = function( options ) {
 		var dr = $.Deferred();
+    	var gh = this;
 
 		var path = cleanPath(options.path);
 		// extract last blob name from path
@@ -251,7 +258,7 @@ github = function( options ) {
 
 		var opt = $.extend( {}, options );
 		opt.path = path;
-		$( this ).github( 'tree', opt )
+		gh.tree( opt )
 			.done( function( tree ) {
 				// look for the blob sha
 				var sha;
@@ -266,7 +273,7 @@ github = function( options ) {
 				delete opt.tree;
 				delete opt.path;
 				opt.sha = sha;
-				$( this ).github( 'blob', opt ).done( drdf( dr ) ).fail( drff( dr ) );
+				gh.blob( opt ).done( drdf( dr ) ).fail( drff( dr ) );
 			} )
 			.fail( drff( dr ) );
 
@@ -319,6 +326,8 @@ github = function( options ) {
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
 	github.prototype.commit = function( options ) {
+    	var gh = this;
+
 		if ( options.sha ) {
 			// an sha for the commit was specified
 			if ( options.tree ) {
@@ -327,18 +336,18 @@ github = function( options ) {
 				if ( checkAuth( dr ) ) {
 					// POST a commit object
 					if ( !options.new_tree ) {
-						$( this ).github( 'commitTree', options )
+						gh.commitTree( options )
 							.done( drdf( dr ) ).fail( drff( dr ) );
 					} else {
 						// a new tree has to be created first
 						var dr = $.Deferred();
 	
-						$( this ).github( 'tree', options )
+						gh.tree( options )
 							.done( function( tree ) {
 								var opt = $.extend( {}, options );
 								delete opt.new_tree;
 								opt.tree = tree.sha;
-								$( this ).github( 'commit', opt )
+								gh.commit( opt )
 									.done( drdf( dr ) ).fail( drff( dr ) );
 							} )
 							.fail( drff( dr ) );	
@@ -356,11 +365,11 @@ github = function( options ) {
 
 			var opt = $.extend( { ref: options.commit_ref }, options );
 			delete opt.commit_ref;
-			$( this ).github( 'ref', opt )
+			gh.ref( opt )
 				.done( function( ref ) {
 					if ( ref.object && ref.object.type == 'commit' ) {
 						opt.sha = ref.object.sha;
-						$( this ).github( 'commit', opt ).done( drdf( dr ) ).fail( drff( dr ) );
+						gh.commit( opt ).done( drdf( dr ) ).fail( drff( dr ) );
 					} else {
 						// commit object not found
 						drf( dr, "COMMIT_OBJECT_NOT_FOUND" );
