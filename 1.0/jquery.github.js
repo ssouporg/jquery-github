@@ -147,6 +147,7 @@ github = function( options ) {
 				return gh.treeAtPath( options );
 			} else {
             	if ( gh.initOptions.useTreeCache == true && gh.treeCache[ options.tree ] ) {
+                	dr.resolve( gh.treeCache[ options.tree ] );
                 } else {
                 	get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree ).done( function( t ) {
                     	if ( gh.initOptions.useTreeCache == true ) {
