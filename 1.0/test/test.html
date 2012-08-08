@@ -41,7 +41,7 @@
 			auth.encodedCredentials = window.btoa( $( '#user' ).val() + ':' + $( '#pwd' ).val() );
 		}
 
-		$().github( 'auth', auth );
+		gh.auth( auth );
 
 		if (auth.type == 'oauth' ) {
 			authorizeOAuth();
