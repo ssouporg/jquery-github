@@ -142,7 +142,12 @@ github = function( options ) {
 				post( api + "/repos/" + options.user + "/" + options.repo + "/git/trees", {
 					base_tree: options.tree,
 					tree: options.new_tree
-				} ).done( drdf( dr ) ).fail( drff( dr ) );
+                } ).done( function( new_base_tree ) {
+                	if ( gh.initOptions.useTreeCache == true ){
+                    	gh.treeCache[options.tree] = new_base_tree;
+                	}
+                	dr.resolve( new_base_tree );
+                } ).fail( drff( dr ) );
 			}
 		} else {
 			// GETS a tree
