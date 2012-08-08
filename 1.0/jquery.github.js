@@ -409,7 +409,7 @@ github = function( options ) {
 				tree: options.tree,
 				parents: [options.sha]
 			} ).done( function( new_commit ) {
-					$( this ).github( 'ref', {
+					gh.ref( {
 						user: options.user,
 						repo: options.repo,
 						ref: options.ref,
