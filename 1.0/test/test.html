@@ -87,7 +87,7 @@
     			user: 'alebellu',
     			repo: 'jquery-github',
     			tree: 'gh-pages',
-    			path: 'test/count'
+            	path: '1.0/test/count'
     		} ).done( function( blob ) {
     			var content = window.atob( blob.content.trim() );
 				$( '#results' ).empty().append( $( '<li>' ).html( content ) );
@@ -100,7 +100,7 @@
     			user: 'alebellu',
     			repo: 'jquery-github',
     			tree: 'gh-pages',
-    			path: 'test/count'
+            	path: '1.0/test/count'
     		} ).done( function( blob ) {
     			var content = window.atob( blob.content.trim() );
     			content = '' + (parseInt( content ) + 1);
@@ -111,7 +111,7 @@
 	    			commit_ref: 'heads/gh-pages',
 	    			tree: 'gh-pages',
 	    			new_tree: [{
-					path: 'test/count',
+                    	path: '1.0/test/count',
 	    				content: content
 	    			}],
 	    			message: 'increasing count'
