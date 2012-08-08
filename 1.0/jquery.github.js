@@ -40,6 +40,9 @@ github = function( options ) {
 
     // Tree errors
 	PATH_NOT_FOUND: [ "ERR_TREE_001", "Path not found" ],
+
+    // Blob errors
+	BLOB_NOT_FOUND: [ "ERR_BLOB_001", "Blob not found" ],
   };
 
 	/**
@@ -284,11 +287,16 @@ github = function( options ) {
 				}
 	
 				// retrieve the blob
-				opt = $.extend( {}, options );
-				delete opt.tree;
-				delete opt.path;
-				opt.sha = sha;
-				gh.blob( opt ).done( drdf( dr ) ).fail( drff( dr ) );
+            	if ( sha ) {
+					opt = $.extend( {}, options );
+					delete opt.tree;
+					delete opt.path;
+					opt.sha = sha;
+					gh.blob( opt ).done( drdf( dr ) ).fail( drff( dr ) );
+                } else {
+                	// blob not found
+                	drf( dr, "BLOB_NOT_FOUND" );
+                }
 			} )
 			.fail( drff( dr ) );
 
