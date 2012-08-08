@@ -8,6 +8,12 @@
  * http://alebellu.github.com/licenses/MIT-LICENSE.txt
  */
 
+github = function( options ) {
+    var gh = this;
+
+    gh.initOptions = options;
+};
+
 (function($) {
 
   var api = "https://api.github.com";
@@ -29,23 +35,19 @@
 	COMMIT_OBJECT_NOT_FOUND: [ "ERR_COMMIT_001", "Commit object not found" ],
   };
 
-  var methods = {
-	init: function( options ) {
-	},
-
 	/**
 	 * Gets/sets encoded credentials in the form required by http basic authentication, user:pwd base64 encoded.
 	 *
 	 * @credentials
 	 */
-	auth: function( authOptions ) {
+	github.prototype.auth = function( authOptions ) {
 		if ( authOptions ) {
 			auth = authOptions;
 		}
 		return auth;
-	},
+	};
 
-	oauth: function( options ) {
+	github.prototype.oauth = function( options ) {
 		var dr = $.Deferred();
 
 		auth = { type: 'oauth' };
@@ -95,18 +97,18 @@
 		window.open( oauthURL );
 
 		return dr.promise();
-	},
+	};
 
-	authorized: function() {
+	github.prototype.authorized = function() {
 		return getUrlVars().code != undefined;
-	},
+	};
 
 	/**
 	 * Returns the github raw URL of a given resource.
 	 */
-	raw: function( user, repo, tag, path ) {
+	github.prototype.raw = function( user, repo, tag, path ) {
 		return "https://raw.github.com/" + user + "/" + repo + "/" + tag + "/" + path;
-	},
+	};
 
 	/**
 	* Gets info for a given tree, given a tree sha/tag name and optionally a path relative to it.
@@ -119,7 +121,7 @@
 	* 	@new_tree Array of Hash objects (of path, mode, type and sha/content) specifying a tree structure
 	* @returns a deferred for the call; callback will yield a tree object
 	*/
-	tree: function( options ) {
+	github.prototype.tree = function( options ) {
 		if ( options.new_tree ) {
 			var dr = $.Deferred();
 
@@ -140,7 +142,7 @@
 				return get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree );
 			}
 		}
-	},
+	};
 
 	/**
 	* Gets info for a given path.
@@ -152,7 +154,7 @@
 	* 	@path the path
 	* @returns a deferred for the call; callback will yield a tree object
 	*/
-	treeAtPath: function( options ) {
+	github.prototype.treeAtPath = function( options ) {
 		var dr = $.Deferred();
 
 		var path = cleanPath(options.path);
@@ -200,7 +202,7 @@
 			.fail( drff( dr ) );
 
 		return dr.promise();
-	},
+	};
 
 	/**
 	* Get blob content given its sha or a tree and the path of the blob relative to that tree.
@@ -213,14 +215,14 @@
 	* 	@path the path of the blob to retrieve, with respect to the tree object
 	* @returns a deferred for the call; callback will yield a blob object
 	*/
-	blob: function( options ) {
+	github.prototype.blob = function( options ) {
 		var path = cleanPath( options.path );
 		if ( path ) {
 			return $( this ).github( 'blobAtPath', options );
 		} else {
 			return get( api + "/repos/" + options.user + "/" + options.repo + "/git/blobs/" + options.sha );
 		}
-	},
+	};
 
 	/**
 	* Get blob content given a tree and the path of the blob relative to that tree.
@@ -232,7 +234,7 @@
 	* 	@path the path
 	* @returns a deferred for the call; callback will yield a blob object
 	*/
-	blobAtPath: function( options ) {
+	github.prototype.blobAtPath = function( options ) {
 		var dr = $.Deferred();
 
 		var path = cleanPath(options.path);
@@ -269,7 +271,7 @@
 			.fail( drff( dr ) );
 
 		return dr.promise();
-	},
+	};
 
 	/**
 	* Gets/sets a reference object.
@@ -281,7 +283,7 @@
 	* 	@sha sha of the object this ref will point to
 	* @returns a deferred for the call; callback will yield a reference object
 	*/
-	ref: function( options ) {
+	github.prototype.ref = function( options ) {
 		if ( options.sha ) {
 			var dr = $.Deferred();
 
@@ -297,7 +299,7 @@
 			// GET
 			return get( api + "/repos/" + options.user + "/" + options.repo + "/git/refs/" + options.ref );
 		}
-	},
+	};
 
 	/**
 	* Gets or post a commit object.
@@ -316,7 +318,7 @@
 	*	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
-	commit: function( options ) {
+	github.prototype.commit = function( options ) {
 		if ( options.sha ) {
 			// an sha for the commit was specified
 			if ( options.tree ) {
@@ -370,7 +372,7 @@
 		} else {
 			// either sha or commit ref has to be specified
 		}
-	},
+	};
 
 	/**
 	* Gets or post a commit object.
@@ -385,7 +387,7 @@
 	* 	@ref the reference to the commit object to retrieve/update
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
-	commitTree: function( options ) {
+	github.prototype.commitTree = function( options ) {
 		if ( options.tree ) {
 			var dr = $.Deferred();
 
@@ -408,18 +410,7 @@
 			// GET a commit object
 			return get( api + "/repos/" + options.user + "/" + options.repo + "/commits/" + options.sha );
 		}
-	}
-  }
-
-  $.fn.github = function( method ) {
-    if ( methods[method] ) {
-      return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-    } else if ( typeof method === 'object' || ! method ) {
-      return methods.init.apply( this, arguments );
-    } else {
-      $.error( 'Method ' +  method + ' does not exist on jQuery.github' );
-    }
-  };
+	};
 
   function cleanPath( path ) {
 	if ( path ) {
