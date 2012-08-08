@@ -146,10 +146,10 @@ github = function( options ) {
 			if ( options.path ) {
 				return gh.treeAtPath( options );
 			} else {
-            	if ( options.cache == true && gh.treeCache[ options.tree ] ) {
+            	if ( gh.initOptions.useTreeCache == true && gh.treeCache[ options.tree ] ) {
                 } else {
                 	get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree ).done( function( t ) {
-                    	if ( options.cache == true ) {
+                    	if ( gh.initOptions.useTreeCache == true ) {
                         	gh.treeCache[ options.tree ] = t;
                     	}
                     	dr.resolve( t );
