@@ -246,9 +246,7 @@ github = function( options ) {
 
     	get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree, {
 			recursive: 1
-		} ).done( function( t ) {
-			dr.resolve( t );
-		} ).fail( drff( dr ) );
+		} ).done( drdf( dr ) ).fail( drff( dr ) );
 
 		return dr.promise();
 	};
