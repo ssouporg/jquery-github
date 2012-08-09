@@ -571,7 +571,7 @@ github = function( options ) {
    * Builds a deferred callback for failure cases on the given deferred
    */
   function drff( deferred ) {
-  	return function( error ) { deferred.rejectWith( this, [error] ); };
+  	return function( error ) { deferred.reject( error ); };
   }
 
   /**
