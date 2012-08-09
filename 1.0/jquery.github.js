@@ -122,7 +122,7 @@ github = function( options ) {
 	};
 
 	/**
-	* Gets info for a given tree, given a tree sha/tag name and optionally a path relative to it.
+	* Gets or updates info for a given tree, given a tree sha/tag name and optionally a path relative to it.
 	*
 	* @options:
 	* 	@user the user
@@ -227,6 +227,28 @@ github = function( options ) {
 				}
 			} )
 			.fail( drff( dr ) );
+
+		return dr.promise();
+	};
+
+	/**
+	* Gets info for a given tree, recursively, given a tree sha/tag name.
+	*
+	* @options:
+	* 	@user the user
+	* 	@repo the repository
+	* 	@tree either the name of a tag or the sha of a tag/tree to retrieve
+	* @returns a deferred for the call; callback will yield a tree object
+	*/
+	github.prototype.treeRecursive = function( options ) {
+		var dr = $.Deferred();
+      	var gh = this;
+
+    	get( api + "/repos/" + options.user + "/" + options.repo + "/git/trees/" + options.tree, {
+			recursive: 1
+		} ).done( function( t ) {
+			dr.resolve( t );
+		} ).fail( drff( dr ) );
 
 		return dr.promise();
 	};
@@ -517,32 +539,32 @@ github = function( options ) {
    * Generic progress to be forwarded to the given deferred
    */
   function drp( deferred, progressObject ) {
-  	deferred.notifyWith( this, [progressObject] );
+  	deferred.notify( progressObject );
   }
 
   /**
    * Generic success to be forwarded to the given deferred
    */
   function drd( deferred, doneObject ) {
-  	deferred.resolveWith( this, [doneObject] );
+  	deferred.resolve( doneObject );
   }
 
   /**
    * Builds a deferred callback for success cases on the given deferred
    */
   function drdf( deferred ) {
-  	return function( doneObject ) { deferred.resolveWith( this, [doneObject] ); };
+  	return function( doneObject ) { deferred.resolve( doneObject ); };
   }
 
   /**
    * Generic failure to be forwarded to the given deferred
    */
   function drf( deferred, error_key, details ) {
-  	deferred.rejectWith( this, [ {
+  	deferred.reject( {
   		code: error_codes[error_key][0],
   		message: error_codes[error_key][1],
   		details: details
-  	} ] );
+  	} );
   }
 
   /**
