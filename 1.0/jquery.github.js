@@ -42,7 +42,7 @@ github = function( options ) {
 	PATH_NOT_FOUND: [ "ERR_TREE_001", "Path not found" ],
 
     // Blob errors
-	BLOB_NOT_FOUND: [ "ERR_BLOB_001", "Blob not found" ],
+	BLOB_NOT_FOUND: [ "ERR_BLOB_001", "Blob not found" ]
   };
 
 	/**
