@@ -56,10 +56,12 @@ github = function( options ) {
 		}
 		return auth;
 	};
-
+var c = 0;
 	github.prototype.oauth = function( options ) {
 		var dr = $.Deferred();
     		var gh = this;
+    		dr.c = c;
+    		c ++;
 
 		auth = { type: 'oauth' };
 
@@ -98,6 +100,7 @@ github = function( options ) {
 						} else {
 							auth.access_token = token.access_token;
 							auth.authorized = true;
+							alert(dr.c);
 							dr.resolve( auth );
 						}
 					} ).fail( drfa( dr ) );
