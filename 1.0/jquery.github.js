@@ -98,7 +98,7 @@ github = function( options ) {
 						} else {
 							auth.access_token = token.access_token;
 							auth.authorized = true;
-							drd( dr, auth );
+							dr.resolve( auth );
 						}
 					} ).fail( drfa( dr ) );
 				}
