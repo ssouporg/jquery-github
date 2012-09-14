@@ -129,7 +129,8 @@ github = function( options ) {
 	};
 
 	github.prototype.authorized = function() {
-		return getUrlVars().code != undefined;
+		//return getUrlVars().code != undefined;
+		return auth.authorized;
 	};
 
 	/**
