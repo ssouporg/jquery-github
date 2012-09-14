@@ -61,6 +61,7 @@ var c = 0;
 		var dr = $.Deferred();
     		var gh = this;
     		dr.c = c;
+    		alert(dr.c);
     		c ++;
 
 		auth = { type: 'oauth' };
