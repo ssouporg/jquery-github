@@ -464,6 +464,8 @@ github = function( options ) {
 	* @returns a deferred for the call; callback will yield a commit object
 	*/
 	github.prototype.commitTree = function( options ) {
+		var gh = this;
+
 		if ( options.tree ) {
 			var dr = $.Deferred();
 
