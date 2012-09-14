@@ -56,7 +56,10 @@ github = function( options ) {
 		}
 		return auth;
 	};
+
+var messageDeferred;
 var c = 0;
+
 	github.prototype.oauth = function( options ) {
 		var dr = $.Deferred();
     		var gh = this;
@@ -70,7 +73,9 @@ var c = 0;
 			"client_id=" + options.client_id +
 			"&scope=" + options.scope;
 
+		messageDeferred = dr; // Deferred to be used by the message handler
 		$( window ).on( 'message', function( event ) {
+			var dr = messageDeferred;
 			var message = event.originalEvent.data;
 			if ( message.origin == 'github_oauth' ) {
 				if ( auth.code ) {
