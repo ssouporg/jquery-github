@@ -59,7 +59,7 @@ github = function( options ) {
 
 	github.prototype.oauth = function( options ) {
 		var dr = $.Deferred();
-    	var gh = this;
+    		var gh = this;
 
 		auth = { type: 'oauth' };
 
@@ -97,6 +97,7 @@ github = function( options ) {
 							drf( dr, "ERROR_RETRIEVING_OAUTH_TOKEN", token.error );
 						} else {
 							auth.access_token = token.access_token;
+							auth.authorized = true;
 							drd( dr, auth );
 						}
 					} ).fail( drfa( dr ) );
@@ -106,6 +107,19 @@ github = function( options ) {
 
 		// open a new window for authentication
 		window.open( oauthURL );
+
+		return dr.promise();
+	};
+
+	github.prototype.logout = function() {
+		var dr = $.Deferred();
+    		var gh = this;
+
+		auth = {
+			authorized: false
+		};
+
+		dr.resolve( auth );
 
 		return dr.promise();
 	};
