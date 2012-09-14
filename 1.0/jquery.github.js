@@ -578,6 +578,7 @@ github = function( options ) {
    */
   function drf( deferred, error_key, details ) {
   	deferred.reject( {
+  		"@type": "artusi:error",
   		code: error_codes[error_key][0],
   		message: error_codes[error_key][1],
   		details: details
@@ -597,6 +598,7 @@ github = function( options ) {
   function drfa( deferred ) {
 	return function( xhr, textStatus, errorThrown ) {
 		deferred.reject( {
+			"@type": "artusi:error",
 			code: error_codes.AJAX_REQUEST_FAILED[0],
 			message: textStatus, // report specific message
 			details: {
