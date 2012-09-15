@@ -92,7 +92,7 @@ github = function( options ) {
 						data: {
 							client_id: options.client_id,
 							code: message.code,
-							state: message.state
+							state: (message.state ? message.state : '')
 						},
 						dataType: "json",
 						cache: false
