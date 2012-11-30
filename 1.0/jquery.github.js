@@ -522,6 +522,7 @@ github = function( options ) {
   }
 
   function post( url, data ) {
+  	console.log('url: '+url + ' data: ' + JSON.stringify(data, null, 2));
   	return ajaxCall ( 'POST', url, JSON.stringify(data, null, 2) );
   	/*console.log('url: '+url + ' data: ' + JSON.stringify(data, null, 2));
   	return $.Deferred().resolve();*/
