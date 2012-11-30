@@ -522,7 +522,9 @@ github = function( options ) {
   }
 
   function post( url, data ) {
-  	return ajaxCall ( 'POST', url, JSON.stringify(data, null, 2) );
+  	//return ajaxCall ( 'POST', url, JSON.stringify(data, null, 2) );
+  	alert('url: '+url + ' data: ' + JSON.stringify(data, null, 2));
+  	return $.Deferred().resolve();
   }
 
   function ajaxCall( type, url, data ) {
