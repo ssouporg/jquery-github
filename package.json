@@ -1,0 +1,28 @@
+{
+  "name": "jquery-github",
+  "description": "JQuery plug-in for GitHub",
+  "version": "1.0.0",
+  "author": {
+    "name": "Alessandro Bellucci",
+    "email": "alebellu@ssoup.org",
+    "url": "http://github.com/alebellu"
+  },
+  "licenses": [
+    {
+      "type": "GPL",
+      "url": "http://alebellu.github.com/licenses/GPL-LICENSE.txt"
+    },
+    {
+      "type": "MIT",
+      "url": "http://alebellu.github.com/licenses/MIT-LICENSE.txt"
+    }
+  ],
+  "main": "./1.0/jquery.github.js",
+  "dependencies": {
+	"jquery-github": "1.0.0"
+  },
+  "engines": {
+    "node": ">=0.4.0"
+  },
+  "readme": "# JQuery plug-in for GitHub"
+}
