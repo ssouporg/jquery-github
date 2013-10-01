@@ -1,7 +1,7 @@
 {
   "name": "jquery-github",
   "description": "JQuery plug-in for GitHub",
-  "version": "0.1.1",
+  "version": "0.1.0-1",
   "author": {
     "name": "Alessandro Bellucci",
     "email": "alebellu@ssoup.org",
