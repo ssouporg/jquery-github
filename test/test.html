@@ -89,7 +89,7 @@
     			user: 'alebellu',
     			repo: 'jquery-github',
     			tree: 'gh-pages',
-            	path: '1.0/test/count'
+            	path: 'test/count'
     		} ).done( function( blob ) {
     			var content = window.atob( blob.content.trim() );
 				$( '#results' ).empty().append( $( '<li>' ).html( content ) );
@@ -102,7 +102,7 @@
     			user: 'alebellu',
     			repo: 'jquery-github',
     			tree: 'gh-pages',
-            	path: '1.0/test/count'
+            	path: 'test/count'
     		} ).done( function( blob ) {
     			var content = window.atob( blob.content.trim() );
     			content = '' + (parseInt( content ) + 1);
@@ -113,7 +113,7 @@
 	    			commit_ref: 'heads/gh-pages',
 	    			tree: 'gh-pages',
 	    			new_tree: [{
-                    	path: '1.0/test/count',
+                    	path: 'test/count',
 	    				content: content
 	    			}],
 	    			message: 'increasing count'
@@ -148,9 +148,9 @@
 		</fieldset>
 		<br />
 		<input type="button" class="action no-auth" value="Get root tree" onclick="getTree()" />
-	<input type="button" class="action no-auth" value="Get tree at path '1.0/test'" onclick="getTree('1.0/test')" />
-	<input type="button" class="action no-auth" value="Get blob '1.0/test/count'" onclick="getBlob()" />
-	<input type="button" class="action auth" value="Increase '1.0/test/count'" onclick="increaseCount()" />
+	<input type="button" class="action no-auth" value="Get tree at path 'test'" onclick="getTree('test')" />
+	<input type="button" class="action no-auth" value="Get blob 'test/count'" onclick="getBlob()" />
+	<input type="button" class="action auth" value="Increase 'test/count'" onclick="increaseCount()" />
 		<hr />
 		<ul id="results" />
 	</div>
