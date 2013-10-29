@@ -1,36 +1,36 @@
 {
-  "name": "jquery-github",
-  "description": "JQuery plug-in for GitHub",
-  "version": "0.1.0-1",
-  "author": {
-    "name": "Alessandro Bellucci",
-    "email": "alebellu@ssoup.org",
-    "url": "http://github.com/alebellu"
-  },
-  "licenses": [
-    {
-      "type": "GPL",
-      "url": "http://alebellu.github.com/licenses/GPL-LICENSE.txt"
+    "name": "jquery-github",
+    "description": "JQuery plug-in for GitHub",
+    "version": "0.1.0-1",
+    "author": {
+        "name": "Alessandro Bellucci",
+        "email": "alebellu@ssoup.org",
+        "url": "http://github.com/alebellu"
     },
-    {
-      "type": "MIT",
-      "url": "http://alebellu.github.com/licenses/MIT-LICENSE.txt"
-    }
-  ],
-  "homepage": "https://github.com/alebellu/jquery-github",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/alebellu/jquery-github"
-  },
-  "bugs": {
-      "url" : "https://github.com/alebellu/jquery-github/issues"
-  },
-  "main": "jquery.github.js",
-  "dependencies": {
-    "jquery-github": "0.1.0-1"
-  },
-  "engines": {
-    "node": ">=0.4.0"
-  },
-  "readme": "# JQuery plug-in for GitHub"
+    "licenses": [
+        {
+            "type": "GPL",
+            "url": "http://alebellu.github.com/licenses/GPL-LICENSE.txt"
+        },
+        {
+            "type": "MIT",
+            "url": "http://alebellu.github.com/licenses/MIT-LICENSE.txt"
+        }
+    ],
+    "homepage": "https://github.com/alebellu/jquery-github",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/alebellu/jquery-github"
+    },
+    "bugs": {
+        "url": "https://github.com/alebellu/jquery-github/issues"
+    },
+    "main": "jquery.github.js",
+    "dependencies": {
+        "jquery-github": "0.1.0-1"
+    },
+    "engines": {
+        "node": ">=0.4.0"
+    },
+    "readme": "# JQuery plug-in for GitHub"
 }
