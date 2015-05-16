@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 jquery-github
 =============
 
@@ -30,4 +29,4 @@ Dual licensed, like JQuery (http://jquery.org/license/)
 - <a href="http://alebellu.github.com/licenses/GPL-LICENSE.txt">GPL</a>
 =======
 Here is the code for the <a href="https://github.com/alebellu/jquery-github">jquery-github</a> project.
->>>>>>> gh-pages
+
